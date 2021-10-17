@@ -2,7 +2,7 @@
 
 # environment
 .env
-appSecrets.json
+*/appSecrets.*
 
 # dependencies
 /node_modules
