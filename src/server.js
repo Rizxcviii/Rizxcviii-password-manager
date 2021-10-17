@@ -4,7 +4,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signOut,
+  signOut
 } from "firebase/auth"
 import config from "./appSecrets"
 
@@ -37,10 +37,14 @@ class Server {
         email,
         password
       )
-      const data = await res.json()
+      const data = res.user
       return data
     } catch (err) {
-      return err
+      return {
+        error: true,
+        code: err.code,
+        message: err.message
+      }
     }
   }
 

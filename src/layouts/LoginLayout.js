@@ -5,25 +5,37 @@ import { useHistory } from "react-router-dom"
 const LoginLayout = ({ children }) => {
   const history = useHistory()
   return (
-    <Box py={3} px={5}>
-      {children}
-      <Flex width={1 / 1} sx={{ alignItems: "stretch" }}>
+    <Box height={1 / 1}>
+      <Box p={3}>{children}</Box>
+      <Flex
+        sx={{
+          alignItems: "stretch",
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          height: "60px"
+        }}
+      >
         <Button
+          variant="nav"
           sx={{
             width: "50%",
             borderRadius: 0,
             border: "1px solid black",
-            borderRight: 0
+            borderRight: 0,
+            fontSize: 6
           }}
           onClick={() => history.push("/login")}
         >
-          Sing In
+          Sign In
         </Button>
         <Button
+          variant="nav"
           sx={{
             width: "50%",
             borderRadius: 0,
-            border: "1px solid black"
+            border: "1px solid black",
+            fontSize: 6
           }}
           onClick={() => history.push("/register")}
         >
