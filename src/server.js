@@ -14,6 +14,24 @@ import config from "./appSecrets"
 class Server {
   #app
   #auth
+  /**
+   * performs a try, catch of fn
+   * @param {requestCallback} fn The firebase function to call
+   * @param  {...any} params parameters to parse into fn
+   * @returns the result, accepted or rejected
+   */
+  #makeCall = async (fn = () => null, ...params) => {
+    try {
+      const res = await fn(...params)
+      return res
+    } catch (err) {
+      return {
+        error: true,
+        code: err.code,
+        message: err.message
+      }
+    }
+  }
 
   constructor() {
     if (!Server.instance) {
@@ -31,21 +49,13 @@ class Server {
    * @returns a data response object in the form of JSON
    */
   createUser = async (email, password) => {
-    try {
-      const res = await createUserWithEmailAndPassword(
-        this.#auth,
-        email,
-        password
-      )
-      const data = res.user
-      return data
-    } catch (err) {
-      return {
-        error: true,
-        code: err.code,
-        message: err.message
-      }
-    }
+    const res = await this.#makeCall(
+      createUserWithEmailAndPassword,
+      this.#auth,
+      email,
+      password
+    )
+    return res
   }
 
   /**
@@ -55,12 +65,13 @@ class Server {
    * @returns a data response object in the form of JSON
    */
   signIn = async (email, password) => {
-    const result = fetch(
-      signInWithEmailAndPassword(this.#auth, email, password)
+    const res = await this.#makeCall(
+      signInWithEmailAndPassword,
+      this.#auth,
+      email,
+      password
     )
-    const response = await result
-    const data = await response.json()
-    return data
+    return res
   }
 
   /**
@@ -68,12 +79,6 @@ class Server {
    * @returns The sign out verification
    */
   singOut = async () => signOut(this.#auth)
-
-  /**
-   * Getter for the current user in the session
-   * @returns the current user signed in
-   */
-  getUser = async () => this.#auth.currentUser
 
   /**
    * Observer to detect new state changes to the auth state

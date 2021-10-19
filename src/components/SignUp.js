@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Flex,
   Input,
@@ -7,8 +6,9 @@ import {
   Spinner,
   Text
 } from "@theme-ui/components"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import Notification from "./ui/Notification"
 
 const SignUp = () => {
   const [pass1, setPass1] = useState("")
@@ -16,11 +16,6 @@ const SignUp = () => {
   const [email, setEmail] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const { signUp, getIsLoading } = useAuth()
-
-  useEffect(
-    () => setTimeout(() => errorMsg && setErrorMsg(""), 3000),
-    [errorMsg]
-  )
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -31,7 +26,7 @@ const SignUp = () => {
           setErrorMsg("The email address is already in use.")
           break
         default:
-          return
+          setErrorMsg("An unknown error occurred, code: " + res.code)
       }
     }
   }
@@ -93,18 +88,12 @@ const SignUp = () => {
           Register
         </Button>
       )}
-      {errorMsg && (
-        <Alert
-          variant="error"
-          sx={{
-            position: "fixed",
-            bottom: "150px",
-            alignSelf: "center"
-          }}
-        >
-          {errorMsg}
-        </Alert>
-      )}
+      <Notification
+        variant="error"
+        setMessage={setErrorMsg}
+        message={errorMsg}
+        count={5000}
+      />
     </Flex>
   )
 }

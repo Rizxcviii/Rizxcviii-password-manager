@@ -1,13 +1,31 @@
 import { Button, Flex, Input, Paragraph } from "@theme-ui/components"
 import React, { useState } from "react"
+import { useAuth } from "../contexts/AuthContext"
+import Notification from "./ui/Notification"
 
 const SignIn = () => {
+  const { signIn } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errorMsg, setErrorMsg] = useState("")
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    console.log(e)
+    const res = await signIn(email, password)
+    if (res.error) {
+      switch (res.code) {
+        case "auth/wrong-password":
+          setErrorMsg("You have entered the incorrect password.")
+          break
+        case "auth/user-not-found":
+          setErrorMsg(
+            "We cannot find the account associated with this email address."
+          )
+          break
+        default:
+          setErrorMsg("An unknown error occurred, code: " + res.code)
+      }
+    }
   }
 
   return (
@@ -19,6 +37,7 @@ const SignIn = () => {
       <Paragraph mb={2}>Please sign in below:</Paragraph>
       <Input
         onChange={e => setEmail(e.target.value)}
+        value={email}
         type="email"
         placeholder="Email"
         mb={3}
@@ -26,6 +45,7 @@ const SignIn = () => {
       />
       <Input
         onChange={e => setPassword(e.target.value)}
+        value={password}
         type="password"
         placeholder="Password"
         mb={3}
@@ -38,7 +58,7 @@ const SignIn = () => {
           alignSelf: "center",
           background: email && password ? "primary" : "grey",
           "&:hover": {
-            cursor: email && password ? "not-allowed" : "pointer"
+            cursor: email && password ? "pointer" : "not-allowed"
           }
         }}
         type="submit"
@@ -47,6 +67,12 @@ const SignIn = () => {
       >
         Login
       </Button>
+      <Notification
+        variant="error"
+        message={errorMsg}
+        setMessage={setErrorMsg}
+        count={5000}
+      />
     </Flex>
   )
 }

@@ -46,6 +46,11 @@ export const theme = Theme => ({
     }
   },
   alerts: {
+    primary: {
+      background: "primary",
+      color: "light",
+      fontFamily: "Centra"
+    },
     success: {
       background: "primary",
       color: "light",
