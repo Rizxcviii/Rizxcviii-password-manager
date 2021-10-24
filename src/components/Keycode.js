@@ -1,15 +1,9 @@
-import {
-  Alert,
-  Button,
-  Flex,
-  Input,
-  Paragraph,
-  Spinner
-} from "@theme-ui/components"
+import { Button, Flex, Input, Paragraph, Spinner } from "@theme-ui/components"
 import React, { useState } from "react"
 import { useHistory } from "react-router"
 import { useAuth } from "../contexts/AuthContext"
 import server from "../server"
+import Notification from "./ui/Notification"
 
 const CreateKeyCode = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -83,9 +77,11 @@ const ConfirmKeyCode = ({ keycode }) => {
     setIsLoading(true)
     if (code === keycode) {
       setIsConfirmed(true)
+      setIsLoading(false)
       history.push("/")
     } else {
-      setErrMsg("Incorrect Keycode, please try again.")
+      setErrMsg("Incorrect keycode, please try again.")
+      setIsLoading(false)
     }
   }
 
@@ -133,7 +129,14 @@ const ConfirmKeyCode = ({ keycode }) => {
           </Button>
         </Flex>
       )}
-      {errMsg && <Alert message={errMsg} setMessage={setErrMsg} />}
+      {errMsg && (
+        <Notification
+          variant="error"
+          message={errMsg}
+          setMessage={setErrMsg}
+          count={2000}
+        />
+      )}
     </Flex>
   )
 }
