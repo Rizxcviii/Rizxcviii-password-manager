@@ -9,14 +9,13 @@ import LoginLayout from "./layouts/LoginLayout"
 
 const Routes = () => {
   const { getCurrentUser } = useAuth()
-  const keycode = ""
   return (
     <Router>
       <Switch>
         <Route exact path="/">
           {getCurrentUser() ? (
             <BaseLayout>
-              <Keycode keycode={keycode} />
+              <Keycode />
             </BaseLayout>
           ) : (
             <LoginLayout>
@@ -26,13 +25,13 @@ const Routes = () => {
         </Route>
         <Route path="/key-code">
           <BaseLayout>
-            <Keycode keycode={keycode} />
+            <Keycode />
           </BaseLayout>
         </Route>
         <Route path="/register">
           {getCurrentUser() ? (
             <BaseLayout>
-              <Keycode keycode={keycode} />
+              <Keycode />
             </BaseLayout>
           ) : (
             <LoginLayout>
