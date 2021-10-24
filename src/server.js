@@ -1,4 +1,4 @@
-import { initializeApp } from "@firebase/app"
+import { initializeApp } from "firebase/app"
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth"
+import { getDatabase, ref, set } from "firebase/database"
 import config from "./appSecrets"
 
 /**
@@ -14,6 +15,7 @@ import config from "./appSecrets"
 class Server {
   #app
   #auth
+  #db
   /**
    * performs a try, catch of fn
    * @param {requestCallback} fn The firebase function to call
@@ -37,10 +39,15 @@ class Server {
     if (!Server.instance) {
       this.#app = initializeApp(config)
       this.#auth = getAuth(this.#app)
+      this.#db = getDatabase(this.#app)
       Server.instance = this
     }
     return
   }
+
+  /***********************************************
+   * AUTHENTICATION
+   ***********************************************/
 
   /**
    * Allows the registration of a user
@@ -86,6 +93,28 @@ class Server {
    * @returns the new auth state
    */
   onAuthChange = fn => onAuthStateChanged(this.#auth, fn)
+
+  /***********************************************
+   * DATABASE
+   ***********************************************/
+
+  /**
+   * Make a single write call using a single key/value pair
+   * @param {String} location The parent location you wish to write to
+   * @param {String} key The key of the data to write
+   * @param {String} value The value of the data to write
+   * @returns a data response object in the form of JSON
+   */
+  write = async (location, key, value) => {
+    const res = this.#makeCall(
+      set,
+      ref(this.#db, `users/${this.#auth.currentUser.uid}/${location}`),
+      {
+        [key]: value
+      }
+    )
+    return res
+  }
 }
 
 const server = new Server()

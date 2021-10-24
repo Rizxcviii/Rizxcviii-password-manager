@@ -8,7 +8,6 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  console.log(currentUser)
 
   const signIn = async (email, password) => {
     setIsLoading(true)
