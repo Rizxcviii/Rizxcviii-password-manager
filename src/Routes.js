@@ -4,6 +4,7 @@ import Keycode from "./components/Keycode"
 import SignIn from "./components/SignIn"
 import SignUp from "./components/SignUp"
 import { useAuth } from "./contexts/AuthContext"
+import BaseLayout from "./layouts/BaseLayout"
 import LoginLayout from "./layouts/LoginLayout"
 
 const Routes = () => {
@@ -14,7 +15,9 @@ const Routes = () => {
       <Switch>
         <Route exact path="/">
           {getCurrentUser() ? (
-            <Keycode keycode={keycode} />
+            <BaseLayout>
+              <Keycode keycode={keycode} />
+            </BaseLayout>
           ) : (
             <LoginLayout>
               <SignIn />
@@ -22,17 +25,20 @@ const Routes = () => {
           )}
         </Route>
         <Route path="/key-code">
-          <Keycode keycode={keycode} />
+          <BaseLayout>
+            <Keycode keycode={keycode} />
+          </BaseLayout>
         </Route>
         <Route path="/register">
-          <LoginLayout>
-            <SignUp />
-          </LoginLayout>
-        </Route>
-        <Route path="/login">
-          <LoginLayout>
-            <SignIn />
-          </LoginLayout>
+          {getCurrentUser() ? (
+            <BaseLayout>
+              <Keycode keycode={keycode} />
+            </BaseLayout>
+          ) : (
+            <LoginLayout>
+              <SignUp />
+            </LoginLayout>
+          )}
         </Route>
       </Switch>
     </Router>

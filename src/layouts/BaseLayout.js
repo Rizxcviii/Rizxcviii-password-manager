@@ -1,13 +1,13 @@
 import { Box } from "@theme-ui/components"
 import React from "react"
 
-const BaseLayout = ({ children }) => (
-  <Box>
-    {children}
-    <Box>
-      {/** TODO: Implement nav (for an extension, it makes sense to keep at bottom) */}
+const BaseLayout = ({ children, footer, ...props }) => (
+  <>
+    <Box p={3} {...props}>
+      {children}
     </Box>
-  </Box>
+    <Box as="footer">{footer}</Box>
+  </>
 )
 
 export default BaseLayout

@@ -1,4 +1,3 @@
-import { Spinner } from "@theme-ui/components"
 import { createContext, useContext, useEffect, useState } from "react"
 import server from "../server"
 
@@ -9,6 +8,7 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  console.log(currentUser)
 
   const signIn = async (email, password) => {
     setIsLoading(true)
@@ -50,9 +50,5 @@ export const AuthProvider = ({ children }) => {
     getIsLoading
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {isLoading ? <Spinner /> : children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

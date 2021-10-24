@@ -1,10 +1,10 @@
-import { Button, Flex, Input, Paragraph } from "@theme-ui/components"
+import { Button, Flex, Input, Paragraph, Spinner } from "@theme-ui/components"
 import React, { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import Notification from "./ui/Notification"
 
 const SignIn = () => {
-  const { signIn } = useAuth()
+  const { signIn, getIsLoading } = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
@@ -19,7 +19,12 @@ const SignIn = () => {
           break
         case "auth/user-not-found":
           setErrorMsg(
-            "We cannot find the account associated with this email address."
+            "We cannot find an account associated with this email address."
+          )
+          break
+        case "auth/too-many-requests":
+          setErrorMsg(
+            "You have tried too many attempts, please try again later"
           )
           break
         default:
@@ -51,22 +56,26 @@ const SignIn = () => {
         mb={3}
         required
       />
-      <Button
-        sx={{
-          width: "180px",
-          fontSize: 5,
-          alignSelf: "center",
-          background: email && password ? "primary" : "grey",
-          "&:hover": {
-            cursor: email && password ? "pointer" : "not-allowed"
-          }
-        }}
-        type="submit"
-        mb={3}
-        onClick={handleSubmit}
-      >
-        Login
-      </Button>
+      {getIsLoading() ? (
+        <Spinner sx={{ alignSelf: "center" }} />
+      ) : (
+        <Button
+          sx={{
+            width: "180px",
+            fontSize: 5,
+            alignSelf: "center",
+            background: email && password ? "primary" : "grey",
+            "&:hover": {
+              cursor: email && password ? "pointer" : "not-allowed"
+            }
+          }}
+          type="submit"
+          mb={3}
+          onClick={handleSubmit}
+        >
+          Login
+        </Button>
+      )}
       <Notification
         variant="error"
         message={errorMsg}

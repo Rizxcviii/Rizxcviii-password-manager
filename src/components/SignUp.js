@@ -28,6 +28,7 @@ const SignUp = () => {
         default:
           setErrorMsg("An unknown error occurred, code: " + res.code)
       }
+    } else {
     }
   }
 
