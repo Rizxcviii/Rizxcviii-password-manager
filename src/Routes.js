@@ -8,37 +8,43 @@ import BaseLayout from "./layouts/BaseLayout"
 import LoginLayout from "./layouts/LoginLayout"
 
 const Routes = () => {
-  const { getCurrentUser } = useAuth()
+  const { getCurrentUser, getIsConfirmed } = useAuth()
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
-          {getCurrentUser() ? (
-            <BaseLayout>
-              <Keycode />
-            </BaseLayout>
-          ) : (
-            <LoginLayout>
-              <SignIn />
-            </LoginLayout>
-          )}
-        </Route>
-        <Route path="/key-code">
-          <BaseLayout>
-            <Keycode />
-          </BaseLayout>
-        </Route>
-        <Route path="/register">
-          {getCurrentUser() ? (
-            <BaseLayout>
-              <Keycode />
-            </BaseLayout>
-          ) : (
-            <LoginLayout>
-              <SignUp />
-            </LoginLayout>
-          )}
-        </Route>
+        {getIsConfirmed() ? (
+          <></>
+        ) : (
+          <>
+            <Route exact path="/">
+              {getCurrentUser() ? (
+                <BaseLayout>
+                  <Keycode />
+                </BaseLayout>
+              ) : (
+                <LoginLayout>
+                  <SignIn />
+                </LoginLayout>
+              )}
+            </Route>
+            <Route path="/key-code">
+              <BaseLayout>
+                <Keycode />
+              </BaseLayout>
+            </Route>
+            <Route path="/register">
+              {getCurrentUser() ? (
+                <BaseLayout>
+                  <Keycode />
+                </BaseLayout>
+              ) : (
+                <LoginLayout>
+                  <SignUp />
+                </LoginLayout>
+              )}
+            </Route>
+          </>
+        )}
       </Switch>
     </Router>
   )

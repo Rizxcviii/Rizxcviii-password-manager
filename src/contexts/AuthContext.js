@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext)
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null)
   const [keyCode, setKeyCode] = useState("")
+  const [isConfirmed, setIsConfirmed] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
   const onLoadKeyCode = async () => {
@@ -42,10 +43,14 @@ export const AuthProvider = ({ children }) => {
 
   const getKeyCode = () => keyCode
 
+  const getIsConfirmed = () => isConfirmed
+
   useEffect(() => {
     const unsubsribe = server.onAuthChange(async user => {
       if (user) {
         await onLoadKeyCode()
+      } else {
+        setKeyCode("")
       }
       setCurrentUser(user)
       setIsLoading(false)
@@ -60,7 +65,9 @@ export const AuthProvider = ({ children }) => {
     signOut,
     signIn,
     getIsLoading,
-    getKeyCode
+    getKeyCode,
+    getIsConfirmed,
+    setIsConfirmed
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Alert } from "theme-ui"
 
 const Notification = ({
@@ -8,9 +8,9 @@ const Notification = ({
   ...props
 }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // useEffect(() => {
-  //   message && setTimeout(() => setMessage(""), count)
-  // }, [count, message, setMessage])
+  useEffect(() => {
+    message && setTimeout(() => setMessage(""), count)
+  }, [count, message, setMessage])
 
   return message ? (
     <Alert
