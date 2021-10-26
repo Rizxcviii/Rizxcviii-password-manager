@@ -12,7 +12,7 @@ const Footer = () => {
         position: "fixed",
         bottom: 0,
         width: "100%",
-        height: "60px",
+        minHeight: "60px",
         flexBasis: 1 / 3
       }}
     >
@@ -24,7 +24,7 @@ const Footer = () => {
           borderRadius: 0,
           border: "1px solid black",
           borderRight: 0,
-          fontSize: 6
+          fontSize: 5
         }}
         onClick={() => history.push("/passwords")}
       >
@@ -37,7 +37,7 @@ const Footer = () => {
           borderRadius: 0,
           border: "1px solid black",
           borderRight: 0,
-          fontSize: 6
+          fontSize: 5
         }}
         onClick={() => history.push("/generate")}
       >
@@ -49,7 +49,7 @@ const Footer = () => {
           flexBasis: "100%",
           borderRadius: 0,
           border: "1px solid black",
-          fontSize: 6
+          fontSize: 5
         }}
         onClick={() => history.push("/questions")}
       >

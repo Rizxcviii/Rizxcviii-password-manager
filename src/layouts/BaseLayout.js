@@ -1,9 +1,9 @@
 import { Box } from "@theme-ui/components"
 import React from "react"
 
-const BaseLayout = ({ children, footer, ...props }) => (
+const BaseLayout = ({ children, footer, header, ...props }) => (
   <>
-    <Box as="header">{footer}</Box>
+    <Box as="header">{header}</Box>
     <Box p={3} {...props}>
       {children}
     </Box>
