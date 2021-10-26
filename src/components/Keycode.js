@@ -9,11 +9,13 @@ const CreateKeyCode = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [code, setCode] = useState("")
   const { signOut } = useAuth()
+  const history = useHistory()
 
   const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
     await server.write(`settings`, "keycode", code)
+    history.push("/passwords")
     setIsLoading(false)
   }
 
@@ -78,7 +80,7 @@ const ConfirmKeyCode = ({ keycode }) => {
     if (code === keycode) {
       setIsConfirmed(true)
       setIsLoading(false)
-      history.push("/")
+      history.push("/passwords")
     } else {
       setErrMsg("Incorrect keycode, please try again.")
       setIsLoading(false)

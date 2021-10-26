@@ -3,6 +3,7 @@ import React from "react"
 
 const BaseLayout = ({ children, footer, ...props }) => (
   <>
+    <Box as="header">{footer}</Box>
     <Box p={3} {...props}>
       {children}
     </Box>

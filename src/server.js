@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth"
-import { child, get, getDatabase, ref, set } from "firebase/database"
+import { child, get, getDatabase, ref, set, update } from "firebase/database"
 import config from "./appSecrets"
 
 /**
@@ -118,13 +118,24 @@ class Server {
 
   /**
    * Make a single read call using the path
-   * @param {String} location The path to read you wish to read data from
+   * @param {String} location The path you wish to read data from
    * @returns a data response object in the form of JSON
    */
   read = async location => {
     const res = await this.#makeCall(
       get,
       child(ref(this.#db), `users/${this.#auth.currentUser.uid}/${location}`)
+    )
+    return res
+  }
+
+  update = async (location, key, value) => {
+    const res = this.#makeCall(
+      update,
+      ref(this.#db, `users/${this.#auth.currentUser.uid}/${location}`),
+      {
+        [key]: value
+      }
     )
     return res
   }
