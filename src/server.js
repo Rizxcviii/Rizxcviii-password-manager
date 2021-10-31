@@ -129,6 +129,13 @@ class Server {
     return res
   }
 
+  /**
+   * Make a single update call using a single key/value pair
+   * @param {String} location The parent location you wish to update to
+   * @param {String} key The key of the data to update
+   * @param {String} value The value of the data to update
+   * @returns a data response object in the form of JSON
+   */
   update = async (location, key, value) => {
     const res = this.#makeCall(
       update,
