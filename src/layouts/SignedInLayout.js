@@ -36,6 +36,7 @@ const Footer = () => {
           flexBasis: "100%",
           borderRadius: 0,
           border: "1px solid black",
+          borderRight: 0,
           fontSize: 5
         }}
         onClick={() => history.push("/questions")}

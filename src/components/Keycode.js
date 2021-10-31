@@ -8,15 +8,21 @@ import Notification from "./ui/Notification"
 const CreateKeyCode = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [code, setCode] = useState("")
-  const { signOut } = useAuth()
+  const { signOut, setIsConfirmed } = useAuth()
   const history = useHistory()
 
   const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
-    await server.write(`settings`, "keycode", code)
-    history.push("/passwords")
-    setIsLoading(false)
+    const res = await server.write(`settings`, "keycode", code)
+    if (res?.err) {
+      console.log(res)
+      setIsLoading(false)
+    } else {
+      setIsLoading(false)
+      setIsConfirmed(true)
+      history.push("/passwords")
+    }
   }
 
   const handleSignOut = () => signOut()
