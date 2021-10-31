@@ -36,12 +36,11 @@ const Footer = () => {
           flexBasis: "100%",
           borderRadius: 0,
           border: "1px solid black",
-          borderRight: 0,
           fontSize: 5
         }}
-        onClick={() => history.push("/generate")}
+        onClick={() => history.push("/questions")}
       >
-        Generate Passwords
+        Answer Questions
       </Button>
       <Button
         variant="nav"
@@ -49,11 +48,12 @@ const Footer = () => {
           flexBasis: "100%",
           borderRadius: 0,
           border: "1px solid black",
+          borderRight: 0,
           fontSize: 5
         }}
-        onClick={() => history.push("/questions")}
+        onClick={() => history.push("/generate")}
       >
-        Answer Questions
+        Generate Passwords
       </Button>
     </Flex>
   )
