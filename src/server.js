@@ -27,6 +27,7 @@ class Server {
       const res = await fn(...params)
       return res
     } catch (err) {
+      console.log(err)
       return {
         error: true,
         code: err.code,
