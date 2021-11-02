@@ -1,6 +1,6 @@
 import React from "react"
 import { useHistory } from "react-router"
-import { Button, Flex } from "theme-ui"
+import { Box, Button, Flex } from "theme-ui"
 import BaseLayout from "./BaseLayout"
 
 const Footer = () => {
@@ -61,7 +61,9 @@ const Footer = () => {
 }
 
 const SignedInLayout = ({ children }) => (
-  <BaseLayout footer={Footer()}>{children}</BaseLayout>
+  <BaseLayout footer={Footer()}>
+    <Box mb="60px">{children}</Box>
+  </BaseLayout>
 )
 
 export default SignedInLayout

@@ -131,6 +131,16 @@ class Server {
   }
 
   /**
+   * Make a single read call using the path, from root
+   * @param {String} location The path you wish to read data from
+   * @returns a data response object in the form of JSON
+   */
+  readRoot = async location => {
+    const res = await this.#makeCall(get, child(ref(this.#db), location))
+    return res
+  }
+
+  /**
    * Make a single update call using a single key/value pair
    * @param {String} location The parent location you wish to update to
    * @param {String} key The key of the data to update
