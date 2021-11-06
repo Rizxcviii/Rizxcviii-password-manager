@@ -1,6 +1,7 @@
 import React from "react"
 import { MemoryRouter as Router, Route, Switch } from "react-router-dom"
 import AnswerQuestions from "./components/AnswerQuestions"
+import GeneratePasswords from "./components/GeneratePasswords"
 import Keycode from "./components/Keycode"
 import Passwords from "./components/Passwords"
 import SignIn from "./components/SignIn"
@@ -57,6 +58,11 @@ const SignedInRoutes = () => {
       <Route path="/questions">
         <SignedInLayout>
           <AnswerQuestions />
+        </SignedInLayout>
+      </Route>
+      <Route path="/generate">
+        <SignedInLayout>
+          <GeneratePasswords />
         </SignedInLayout>
       </Route>
     </>

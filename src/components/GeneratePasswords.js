@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Flex,
-  Input,
   Paragraph,
   Spinner,
   Text
@@ -25,7 +24,7 @@ const Question = ({ question, answer, onChange, ...props }) => {
       <Text sx={{ fontSize: 4, fontWeight: "bold" }}>Question:</Text>
       <Text mb={2}>{question}</Text>
       <Text sx={{ fontSize: 4, fontWeight: "bold" }}>Your response:</Text>
-      <Input onChange={e => onChange(e.target.value)} value={answer} mt={1} />
+      <Text>{answer}</Text>
     </Flex>
   )
 }
@@ -35,6 +34,7 @@ const AnswerQuestions = () => {
   const [questionsAnswered, setQuestionsAnswered] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errMsg, setErrMsg] = useState("")
+  const [wordsToScramble, setWordsToScramble] = useState([])
 
   const loadQuestionSet = async () => {
     setIsLoading(true)
@@ -72,24 +72,13 @@ const AnswerQuestions = () => {
     setIsLoading(false)
   }
 
+  const handleScramble = () => null
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadQuestionSet(), [])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadAnsweredQuestions(), [questionSet])
-
-  const handleSave = async () => {
-    setIsLoading(true)
-    const res = await server.update("", "answers", questionsAnswered)
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
-      setIsLoading(false)
-      return
-    } else {
-      await loadAnsweredQuestions()
-      setIsLoading(false)
-    }
-  }
 
   if (isLoading) return <Spinner />
 
@@ -101,11 +90,11 @@ const AnswerQuestions = () => {
       }}
     >
       <Paragraph mb={2}>
-        Feel free to answer any of the questions asked below. Once you do,
-        please click the 'Save' button to record your changes.
+        Click on any number of responses below. Afterwards, click generate to
+        generate a memorable password!
       </Paragraph>
-      <Button mb={2} type="button" onClick={handleSave}>
-        Save
+      <Button mb={2} type="button" onClick={() => handleScramble()}>
+        Scramble
       </Button>
       <Text
         sx={{
@@ -126,13 +115,8 @@ const AnswerQuestions = () => {
             question={question}
             answer={questionsAnswered?.[i] || ""}
             mb={i === questionSet.length - 1 ? 0 : 2}
-            onChange={answer =>
-              setQuestionsAnswered([
-                ...questionsAnswered.slice(0, i),
-                answer,
-                ...questionsAnswered.slice(i + 1)
-              ])
-            }
+            onClick={() => setWordsToScramble(i)}
+            border={wordsToScramble === i ? "1px solid primary" : 0}
           />
         ))}
       </Box>
