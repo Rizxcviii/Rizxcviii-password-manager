@@ -91,8 +91,6 @@ const AnswerQuestions = () => {
     }
   }
 
-  if (isLoading) return <Spinner />
-
   return (
     <Flex
       sx={{
@@ -120,21 +118,25 @@ const AnswerQuestions = () => {
           overflowY: "scroll"
         }}
       >
-        {questionSet.map((question, i) => (
-          <Question
-            key={i}
-            question={question}
-            answer={questionsAnswered?.[i] || ""}
-            mb={i === questionSet.length - 1 ? 0 : 2}
-            onChange={answer =>
-              setQuestionsAnswered([
-                ...questionsAnswered.slice(0, i),
-                answer,
-                ...questionsAnswered.slice(i + 1)
-              ])
-            }
-          />
-        ))}
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          questionSet.map((question, i) => (
+            <Question
+              key={i}
+              question={question}
+              answer={questionsAnswered?.[i] || ""}
+              mb={i === questionSet.length - 1 ? 0 : 2}
+              onChange={answer =>
+                setQuestionsAnswered([
+                  ...questionsAnswered.slice(0, i),
+                  answer,
+                  ...questionsAnswered.slice(i + 1)
+                ])
+              }
+            />
+          ))
+        )}
       </Box>
       {errMsg && (
         <Notification
