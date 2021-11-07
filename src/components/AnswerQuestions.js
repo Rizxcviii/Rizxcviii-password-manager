@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Input,
   Paragraph,
   Spinner,
@@ -98,6 +99,7 @@ const AnswerQuestions = () => {
         height: "500px"
       }}
     >
+      <Heading as="h1">Answer Questions</Heading>
       <Paragraph mb={2}>
         Feel free to answer any of the questions asked below. Once you do,
         please click the 'Save' button to record your changes.

@@ -22,6 +22,11 @@ export const theme = Theme => ({
       fontFamily: "Centra",
       fontSize: 3,
       fontWeight: 300
+    },
+    heading: {
+      fontFamily: "Centra",
+      fontSize: 6,
+      fontWeight: "bold"
     }
   },
   buttons: {
@@ -34,7 +39,12 @@ export const theme = Theme => ({
       },
       background: "teal",
       boxShadow:
-        "rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;"
+        "rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;",
+      disabled: {
+        opacity: 0.5,
+        fontFamily: "Centra",
+        fontWeight: 400
+      }
     },
     nav: {
       color: "dark",

@@ -2,33 +2,28 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Paragraph,
   Spinner,
   Text
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
+import { useHistory } from "react-router"
 import server from "../server"
 import Notification from "./ui/Notification"
 
-const Question = ({
-  question,
-  answer,
-  onChange,
-  sxProps,
-  inQueue,
-  ...props
-}) => (
+const Question = ({ question, answer, onClick, inQueue, ...props }) => (
   <Flex
     p={2}
     sx={{
       flexDirection: "column",
-      border: "1px solid black",
+      border: inQueue ? "4px solid teal" : "1px solid black",
       borderRadius: 6,
       "&:hover": {
         cursor: "pointer"
-      },
-      ...sxProps
+      }
     }}
+    onClick={() => onClick(answer)}
     {...props}
   >
     <Flex
@@ -66,7 +61,7 @@ const AnswerQuestions = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [errMsg, setErrMsg] = useState("")
   const [wordsToScramble, setWordsToScramble] = useState([])
-  const [homoglyphs, setHomoglyphs] = useState([])
+  const history = useHistory()
 
   const loadQuestionSet = async () => {
     setIsLoading(true)
@@ -104,27 +99,19 @@ const AnswerQuestions = () => {
     setIsLoading(false)
   }
 
-  const loadHomoglpyhs = async () => {
-    const res = await server.readRoot("homoglyphs")
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
-      setIsLoading(false)
-      return
-    } else {
-      setHomoglyphs(res.val())
-    }
-    setIsLoading(false)
-  }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadQuestionSet(), [])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadAnsweredQuestions(), [questionSet])
 
-  useEffect(() => loadHomoglpyhs(), [])
-
-  const handleScramble = () => null
+  const handleAnswer = answer => {
+    setWordsToScramble(
+      wordsToScramble.includes(answer)
+        ? wordsToScramble.filter(word => word !== answer)
+        : [...wordsToScramble, answer]
+    )
+  }
 
   return (
     <Flex
@@ -133,13 +120,39 @@ const AnswerQuestions = () => {
         height: "500px"
       }}
     >
+      <Heading as="h1">Generate Passwords</Heading>
       <Paragraph mb={2}>
-        Click on any number of responses below. Afterwards, click generate to
-        generate a memorable password!
+        Click on any number of responses below. Afterwards, click 'Scramble' to
+        generate a list of memorable passwords!
       </Paragraph>
-      <Button mb={2} type="button" onClick={() => handleScramble()}>
-        Scramble
-      </Button>
+      <abbr
+        title={
+          !wordsToScramble.length
+            ? "Please select at least one answer"
+            : "Click to scramble"
+        }
+      >
+        <Button
+          mb={2}
+          type="button"
+          onClick={() =>
+            history.push(
+              `/scramble?${wordsToScramble
+                .map(word => "words[]=" + word)
+                .join("&")}`
+            )
+          }
+          disabled={!wordsToScramble.length}
+          sx={{
+            "&:hover": {
+              cursor: !wordsToScramble.length ? "not-allowed" : "pointer"
+            },
+            width: "100%"
+          }}
+        >
+          Scramble
+        </Button>
+      </abbr>
       <Paragraph mb={2}>
         NOTE: The order in which you select the questions will be the order in
         which the words will be scrambled.
@@ -162,7 +175,7 @@ const AnswerQuestions = () => {
           }}
           mb={1}
         >
-          Please answer the questions below:
+          Please select any of the answers below:
         </Text>
       )}
       <Box
@@ -181,20 +194,9 @@ const AnswerQuestions = () => {
                   question={question}
                   answer={questionsAnswered[i]}
                   mb={i === questionSet.length - 1 ? 0 : 2}
-                  onClick={() =>
-                    setWordsToScramble(
-                      wordsToScramble.includes(i)
-                        ? [...wordsToScramble].filter(x => x !== i)
-                        : [...wordsToScramble, i]
-                    )
-                  }
-                  sxProps={{
-                    border: wordsToScramble.includes(i)
-                      ? "4px solid teal"
-                      : "1px solid black"
-                  }}
+                  onClick={answer => handleAnswer(answer)}
                   inQueue={
-                    wordsToScramble.includes(i)
+                    wordsToScramble.includes(questionsAnswered[i])
                       ? wordsToScramble.indexOf(i)
                       : false
                   }

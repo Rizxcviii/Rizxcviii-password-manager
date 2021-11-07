@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   IconButton,
   Input,
   Spinner,
@@ -216,6 +217,7 @@ const PasswordList = ({ passwords, setIsLoading, onLoad }) =>
           password={passwords[useCase]}
           useCase={useCase}
           i={i}
+          key={useCase}
           lastEl={i === arr.length - 1}
           setIsLoading={setIsLoading}
           onLoad={onLoad}
@@ -244,6 +246,7 @@ const Passwords = () => {
         flexDirection: "column"
       }}
     >
+      <Heading as="h1">Your Vault</Heading>
       <AddPassword setErrMsg={setErrMsg} onLoad={onLoad} />
       <Text
         sx={{

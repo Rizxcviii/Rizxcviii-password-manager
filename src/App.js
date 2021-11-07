@@ -12,9 +12,16 @@ const GlobalStyles = () => (
       body {
         width: 400px;
         height: 600px;
+        margin: 0;
       }
       figure {
         margin: 0;
+      }
+      button {
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
       }
       @font-face {
         font-family: "Centra";

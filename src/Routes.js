@@ -4,6 +4,7 @@ import AnswerQuestions from "./components/AnswerQuestions"
 import GeneratePasswords from "./components/GeneratePasswords"
 import Keycode from "./components/Keycode"
 import Passwords from "./components/Passwords"
+import ScramblePasswords from "./components/ScramblePasswords"
 import SignIn from "./components/SignIn"
 import SignUp from "./components/SignUp"
 import { useAuth } from "./contexts/AuthContext"
@@ -64,6 +65,9 @@ const SignedInRoutes = () => {
         <SignedInLayout>
           <GeneratePasswords />
         </SignedInLayout>
+      </Route>
+      <Route path="/scramble">
+        <ScramblePasswords />
       </Route>
     </>
   )
