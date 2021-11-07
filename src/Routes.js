@@ -67,7 +67,9 @@ const SignedInRoutes = () => {
         </SignedInLayout>
       </Route>
       <Route path="/scramble">
-        <ScramblePasswords />
+        <SignedInLayout>
+          <ScramblePasswords />
+        </SignedInLayout>
       </Route>
     </>
   )

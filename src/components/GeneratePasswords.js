@@ -137,9 +137,7 @@ const AnswerQuestions = () => {
           type="button"
           onClick={() =>
             history.push(
-              `/scramble?${wordsToScramble
-                .map(word => "words[]=" + word)
-                .join("&")}`
+              `/scramble?words=${wordsToScramble.map(word => word).join(",")}`
             )
           }
           disabled={!wordsToScramble.length}
@@ -197,7 +195,7 @@ const AnswerQuestions = () => {
                   onClick={answer => handleAnswer(answer)}
                   inQueue={
                     wordsToScramble.includes(questionsAnswered[i])
-                      ? wordsToScramble.indexOf(i)
+                      ? wordsToScramble.indexOf(questionsAnswered[i])
                       : false
                   }
                 />
