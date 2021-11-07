@@ -144,46 +144,63 @@ const AnswerQuestions = () => {
         NOTE: The order in which you select the questions will be the order in
         which the words will be scrambled.
       </Paragraph>
-      <Text
-        sx={{
-          fontWeight: "bold",
-          fontSize: 5
-        }}
-        mb={1}
-      >
-        Please answer the questions below:
-      </Text>
+      {questionsAnswered.every(answer => answer === "") ? (
+        <Paragraph
+          sx={{
+            fontWeight: "bold",
+            fontSize: 5
+          }}
+        >
+          You have not yet answered any questions. Please go to 'Answer
+          Questions' to start generating unique passwords!
+        </Paragraph>
+      ) : (
+        <Text
+          sx={{
+            fontWeight: "bold",
+            fontSize: 5
+          }}
+          mb={1}
+        >
+          Please answer the questions below:
+        </Text>
+      )}
       <Box
         sx={{
-          overflowY: "scroll"
+          overflowY: "auto"
         }}
       >
         {isLoading ? (
           <Spinner />
         ) : (
-          questionSet.map((question, i) => (
-            <Question
-              key={i}
-              question={question}
-              answer={questionsAnswered?.[i] || ""}
-              mb={i === questionSet.length - 1 ? 0 : 2}
-              onClick={() =>
-                setWordsToScramble(
-                  wordsToScramble.includes(i)
-                    ? [...wordsToScramble].filter(x => x !== i)
-                    : [...wordsToScramble, i]
-                )
-              }
-              sxProps={{
-                border: wordsToScramble.includes(i)
-                  ? "4px solid teal"
-                  : "1px solid black"
-              }}
-              inQueue={
-                wordsToScramble.includes(i) ? wordsToScramble.indexOf(i) : false
-              }
-            />
-          ))
+          questionSet.map(
+            (question, i) =>
+              questionsAnswered[i] && (
+                <Question
+                  key={i}
+                  question={question}
+                  answer={questionsAnswered[i]}
+                  mb={i === questionSet.length - 1 ? 0 : 2}
+                  onClick={() =>
+                    setWordsToScramble(
+                      wordsToScramble.includes(i)
+                        ? [...wordsToScramble].filter(x => x !== i)
+                        : [...wordsToScramble, i]
+                    )
+                  }
+                  sxProps={{
+                    border: wordsToScramble.includes(i)
+                      ? "4px solid teal"
+                      : "1px solid black"
+                  }}
+                  inQueue={
+                    wordsToScramble.includes(i)
+                      ? wordsToScramble.indexOf(i)
+                      : false
+                  }
+                />
+              )
+          )
         )}
       </Box>
       {errMsg && (

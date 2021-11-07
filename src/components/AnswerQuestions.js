@@ -115,7 +115,7 @@ const AnswerQuestions = () => {
       </Text>
       <Box
         sx={{
-          overflowY: "scroll"
+          overflowY: "auto"
         }}
       >
         {isLoading ? (
