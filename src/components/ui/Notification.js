@@ -14,7 +14,9 @@ const Notification = ({
     }
   }, [count, message, setMessage])
 
-  return message ? (
+  if (!message) return <></>
+
+  return (
     <Alert
       sx={{
         position: "fixed",
@@ -28,8 +30,6 @@ const Notification = ({
     >
       {message}
     </Alert>
-  ) : (
-    <></>
   )
 }
 
