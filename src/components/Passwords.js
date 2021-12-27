@@ -12,7 +12,7 @@ import { useEffect, useState } from "react"
 import server from "../server"
 import Notification from "./ui/Notification"
 
-const AddPassword = ({ setErrMsg, onLoad }) => {
+const AddPassword = ({ setErrMsg, setMsg, onLoad }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAddPassword, setShowAddPassword] = useState(false)
   const [passwordInput, setPasswordInput] = useState("")
@@ -37,6 +37,7 @@ const AddPassword = ({ setErrMsg, onLoad }) => {
         "There was an error adding your password. Please try again later."
       )
     } else {
+      setMsg("Password " + useCaseInput + " added.")
       onLoad()
     }
     setIsLoading(false)
@@ -276,7 +277,7 @@ const Passwords = () => {
       }}
     >
       <Heading as="h1">Your Vault</Heading>
-      <AddPassword setErrMsg={setErrMsg} onLoad={onLoad} />
+      <AddPassword setMsg={setMsg} setErrMsg={setErrMsg} onLoad={onLoad} />
       <Text
         sx={{
           fontSize: 5,
