@@ -5,6 +5,7 @@ import {
   Heading,
   IconButton,
   Input,
+  Paragraph,
   Spinner,
   Text
 } from "@theme-ui/components"
@@ -12,7 +13,7 @@ import { useEffect, useState } from "react"
 import server from "../server"
 import Notification from "./ui/Notification"
 
-const AddPassword = ({ setErrMsg, setMsg, onLoad }) => {
+const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAddPassword, setShowAddPassword] = useState(false)
   const [passwordInput, setPasswordInput] = useState("")
@@ -54,6 +55,14 @@ const AddPassword = ({ setErrMsg, setMsg, onLoad }) => {
         as="form"
         onSubmit={handleAddPasswordSubmit}
       >
+        <Paragraph
+          sx={{
+            fontSize: 4
+          }}
+        >
+          Use the below space to add a new password. Or edit a new password by
+          using the same use case, as before.
+        </Paragraph>
         <Input
           onChange={e => setUseCaseInput(e.target.value)}
           type="text"
@@ -81,14 +90,6 @@ const AddPassword = ({ setErrMsg, setMsg, onLoad }) => {
           placeholder="Password"
           mb={2}
         />
-        <Text
-          sx={{
-            fontSize: 2
-          }}
-        >
-          NOTE: Using the same use case for another password will overwrite it.
-          Please use your naming conventions well.
-        </Text>
         <Flex mt={3} width={1 / 1}>
           {isLoading ? (
             <Spinner />
@@ -120,7 +121,9 @@ const AddPassword = ({ setErrMsg, setMsg, onLoad }) => {
       </Box>
     )
   }
-  return <Button onClick={() => setShowAddPassword(true)}>Add password</Button>
+  return (
+    <Button onClick={() => setShowAddPassword(true)}>Add/Edit password</Button>
+  )
 }
 
 const Password = ({
@@ -277,7 +280,7 @@ const Passwords = () => {
       }}
     >
       <Heading as="h1">Your Vault</Heading>
-      <AddPassword setMsg={setMsg} setErrMsg={setErrMsg} onLoad={onLoad} />
+      <AddEditPassword setMsg={setMsg} setErrMsg={setErrMsg} onLoad={onLoad} />
       <Text
         sx={{
           fontSize: 5,
