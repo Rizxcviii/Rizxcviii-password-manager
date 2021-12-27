@@ -17,7 +17,7 @@ const Question = ({ question, answer, onClick, inQueue, ...props }) => (
     p={2}
     sx={{
       flexDirection: "column",
-      border: inQueue ? "4px solid teal" : "1px solid black",
+      border: inQueue !== false ? "4px solid teal" : "1px solid black",
       borderRadius: 6,
       "&:hover": {
         cursor: "pointer"
@@ -55,62 +55,57 @@ const Question = ({ question, answer, onClick, inQueue, ...props }) => (
   </Flex>
 )
 
-const AnswerQuestions = () => {
-  const [questionSet, setQuestionSet] = useState([])
+const GeneratePasswords = () => {
   const [questionsAnswered, setQuestionsAnswered] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errMsg, setErrMsg] = useState("")
   const [wordsToScramble, setWordsToScramble] = useState([])
   const history = useHistory()
 
-  const loadQuestionSet = async () => {
-    setIsLoading(true)
-    const res = await server.readRoot("questions")
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
-      setIsLoading(false)
-      return
-    } else {
-      setQuestionSet(res.val())
-    }
-    setIsLoading(false)
-  }
-
   const loadAnsweredQuestions = async () => {
-    if (!questionSet.length) return
     setIsLoading(true)
-    const res = await server.read("answers")
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
+    const answers = await server.read("answers")
+    const questions = await server.readRoot("questions")
+    if (questions.length === 0) {
+      setIsLoading(false)
+      return
+    }
+    if (answers?.err) {
+      setErrMsg("There has been an error, code: " + answers?.code)
+      setIsLoading(false)
+      return
+    } else if (questions?.err) {
+      setErrMsg("There has been an error, code: " + questions?.code)
       setIsLoading(false)
       return
     } else {
-      if (res.val() && questionSet.length - res.val().length !== 0) {
-        setQuestionsAnswered([
-          ...res.val(),
-          ...new Array(questionSet.length - res.val().length).fill("")
-        ])
-      } else if (res.val()) {
-        setQuestionsAnswered([...res.val()])
-      } else {
-        setQuestionsAnswered(new Array(questionSet.length).fill(""))
+      const answerSet = answers.val().reduce((acc, answer, i) => {
+        if (answer) {
+          acc.push({
+            question: questions.val()[i],
+            answer
+          })
+        }
+        return acc
+      }, [])
+      if (answerSet.length) {
+        setQuestionsAnswered(answerSet)
       }
     }
     setIsLoading(false)
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => loadQuestionSet(), [])
+  useEffect(() => loadAnsweredQuestions(), [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => loadAnsweredQuestions(), [questionSet])
-
-  const handleAnswer = answer => {
-    setWordsToScramble(
-      wordsToScramble.includes(answer)
-        ? wordsToScramble.filter(word => word !== answer)
-        : [...wordsToScramble, answer]
-    )
+  const handleClick = answer => {
+    const newWordsToScramble = [...wordsToScramble]
+    const i = newWordsToScramble.indexOf(answer)
+    if (i !== -1) {
+      newWordsToScramble.splice(i, 1)
+    } else {
+      newWordsToScramble.push(answer)
+    }
+    setWordsToScramble(newWordsToScramble)
   }
 
   return (
@@ -184,18 +179,18 @@ const AnswerQuestions = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          questionSet.map(
-            (question, i) =>
+          questionsAnswered.map(
+            (obj, i) =>
               questionsAnswered[i] && (
                 <Question
                   key={i}
-                  question={question}
-                  answer={questionsAnswered[i]}
-                  mb={i === questionSet.length - 1 ? 0 : 2}
-                  onClick={answer => handleAnswer(answer)}
+                  question={obj.question}
+                  answer={obj.answer}
+                  mb={i === questionsAnswered.length - 1 ? 0 : 2}
+                  onClick={answer => handleClick(answer)}
                   inQueue={
-                    wordsToScramble.includes(questionsAnswered[i])
-                      ? wordsToScramble.indexOf(questionsAnswered[i])
+                    wordsToScramble.indexOf(obj.answer) !== -1
+                      ? wordsToScramble.indexOf(obj.answer)
                       : false
                   }
                 />
@@ -215,4 +210,4 @@ const AnswerQuestions = () => {
   )
 }
 
-export default AnswerQuestions
+export default GeneratePasswords
