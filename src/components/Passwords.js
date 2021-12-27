@@ -63,7 +63,15 @@ const AddPassword = ({ setErrMsg, onLoad }) => {
             fontSize: 2
           }}
         >
-          *The following characters cannot be used: {falesValues.join(` , `)}
+          *The following characters cannot be used: <br />
+        </Text>
+        <Text
+          sx={{
+            fontSize: 2,
+            fontWeight: "bold"
+          }}
+        >
+          {falesValues.join(` , `)}
         </Text>
         <Input
           onChange={e => setPasswordInput(e.target.value)}
@@ -114,12 +122,26 @@ const AddPassword = ({ setErrMsg, onLoad }) => {
   return <Button onClick={() => setShowAddPassword(true)}>Add password</Button>
 }
 
-const Password = ({ password, useCase, setIsLoading, onLoad, i, lastEl }) => {
+const Password = ({
+  password,
+  setMsg,
+  setErrMsg,
+  useCase,
+  setIsLoading,
+  onLoad,
+  lastEl
+}) => {
   const [showPassword, setShowPassword] = useState(false)
+
   const handleDeletePassword = async key => {
     setIsLoading(true)
-    await server.update("passwords", key, null)
-    onLoad()
+    const res = await server.update("passwords", key, null)
+    if (res?.error) {
+      setErrMsg("There was an error deleting your password. Error: " + res.code)
+    } else {
+      setMsg("Password " + key + " deleted.")
+      onLoad()
+    }
   }
 
   return (
@@ -158,7 +180,12 @@ const Password = ({ password, useCase, setIsLoading, onLoad, i, lastEl }) => {
             />
           </abbr>
         </IconButton>
-        <IconButton onClick={() => navigator.clipboard.writeText(password)}>
+        <IconButton
+          onClick={() => {
+            navigator.clipboard.writeText(password)
+            setMsg("Password " + useCase + " copied to clipboard!")
+          }}
+        >
           <abbr title="Copy password to clipboard">
             <img
               alt="Copy password to clipboard"
@@ -183,7 +210,7 @@ const Password = ({ password, useCase, setIsLoading, onLoad, i, lastEl }) => {
   )
 }
 
-const PasswordList = ({ passwords, setIsLoading, onLoad }) =>
+const PasswordList = ({ passwords, setErrMsg, setMsg, setIsLoading, onLoad }) =>
   !passwords ? (
     <Text>Your vault is empty! Try generating/adding some passwords!</Text>
   ) : (
@@ -214,9 +241,10 @@ const PasswordList = ({ passwords, setIsLoading, onLoad }) =>
       </Flex>
       {Object.keys(passwords).map((useCase, i, arr) => (
         <Password
+          setErrMsg={setErrMsg}
+          setMsg={setMsg}
           password={passwords[useCase]}
           useCase={useCase}
-          i={i}
           key={useCase}
           lastEl={i === arr.length - 1}
           setIsLoading={setIsLoading}
@@ -230,6 +258,7 @@ const Passwords = () => {
   const [passwords, setPasswords] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [errMsg, setErrMsg] = useState("")
+  const [msg, setMsg] = useState("")
 
   const onLoad = async () => {
     setIsLoading(true)
@@ -273,12 +302,20 @@ const Passwords = () => {
             passwords={passwords}
             setIsLoading={setIsLoading}
             onLoad={onLoad}
+            setMsg={setMsg}
+            setErrMsg={setErrMsg}
           />
         )}
       </Flex>
       {errMsg && (
-        <Notification message={errMsg} setMessage={setErrMsg} count={2000} />
+        <Notification
+          variant="error"
+          message={errMsg}
+          setMessage={setErrMsg}
+          count={2000}
+        />
       )}
+      {msg && <Notification message={msg} setMessage={setMsg} count={2000} />}
     </Flex>
   )
 }

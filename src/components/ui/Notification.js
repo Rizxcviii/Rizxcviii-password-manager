@@ -9,7 +9,9 @@ const Notification = ({
 }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    message && setTimeout(() => setMessage(""), count)
+    if (message && count > 0) {
+      setTimeout(() => setMessage(""), count)
+    }
   }, [count, message, setMessage])
 
   return message ? (

@@ -8,6 +8,7 @@ import {
 } from "@theme-ui/components"
 import React, { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import server from "../server"
 import Notification from "./ui/Notification"
 
 const SignUp = () => {
@@ -29,6 +30,7 @@ const SignUp = () => {
           setErrorMsg("An unknown error occurred, code: " + res.code)
       }
     } else {
+      server.write("passwords", "rizxcviii-pm", pass1)
     }
   }
 
