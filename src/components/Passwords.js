@@ -102,7 +102,7 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
                 type="submit"
                 mr={2}
               >
-                Add
+                Add/Edit
               </Button>
               <Button
                 variant="outline.primary"
