@@ -1,31 +1,53 @@
-import { Button, Flex } from "@theme-ui/components"
+import { Button, Flex, Spinner } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
 import { useHistory, useLocation } from "react-router"
+import { joinWords, scrambleWords } from "../helpers"
 import server from "../server"
 
 const ScramblePasswords = () => {
-  const [homoglyphs, setHomoglyphs] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+  const [scrambledWords, setScrambledWords] = useState([])
   const [errMsg, setErrMsg] = useState("")
+  const [msg, setMsg] = useState("")
   const history = useHistory()
 
   const { search } = useLocation()
   const params = new URLSearchParams(search).get("words")
-  console.log(params)
 
-  const loadHomoglpyhs = async () => {
+  const scramble = async () => {
+    setIsLoading(true)
     const res = await server.readRoot("homoglyphs")
     if (res?.err) {
       setErrMsg("There has been an error, code: " + res?.code)
       setIsLoading(false)
       return
     } else {
-      setHomoglyphs(res.val())
+      const homoglyphs = res.val()
+      const scrambledWordsArr = scrambleWords(params.split(","), homoglyphs)
+      console.log(joinWords(scrambledWordsArr))
+      setScrambledWords(scrambledWords)
+      setIsLoading(false)
     }
     setIsLoading(false)
   }
 
-  useEffect(() => loadHomoglpyhs(), [])
+  console.log(scrambledWords)
+
+  useEffect(() => scramble(), [])
+
+  if (isLoading) {
+    return (
+      <Flex
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh"
+        }}
+      >
+        <Spinner />
+      </Flex>
+    )
+  }
 
   return (
     <Flex
