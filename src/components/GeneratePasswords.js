@@ -12,12 +12,12 @@ import { useHistory } from "react-router"
 import server from "../server"
 import Notification from "./ui/Notification"
 
-const Question = ({ question, answer, onClick, inQueue, ...props }) => (
+const Question = ({ question, answer, onClick, queueNum, ...props }) => (
   <Flex
     p={2}
     sx={{
       flexDirection: "column",
-      border: inQueue !== false ? "4px solid teal" : "1px solid black",
+      border: queueNum !== -1 ? "4px solid teal" : "1px solid black",
       borderRadius: 6,
       "&:hover": {
         cursor: "pointer"
@@ -32,7 +32,7 @@ const Question = ({ question, answer, onClick, inQueue, ...props }) => (
       }}
     >
       <Text sx={{ fontSize: 4, fontWeight: "bold" }}>Question:</Text>
-      {inQueue !== false && (
+      {queueNum !== -1 && (
         <Text
           sx={{
             fontSize: 6,
@@ -45,7 +45,7 @@ const Question = ({ question, answer, onClick, inQueue, ...props }) => (
             textAlign: "center"
           }}
         >
-          {inQueue + 1}
+          {queueNum + 1}
         </Text>
       )}
     </Flex>
@@ -100,10 +100,10 @@ const GeneratePasswords = () => {
   const handleClick = answer => {
     const newWordsToScramble = [...wordsToScramble]
     const i = newWordsToScramble.indexOf(answer)
-    if (i !== -1) {
-      newWordsToScramble.splice(i, 1)
-    } else {
+    if (i === -1) {
       newWordsToScramble.push(answer)
+    } else {
+      newWordsToScramble.splice(i, 1)
     }
     setWordsToScramble(newWordsToScramble)
   }
@@ -188,11 +188,7 @@ const GeneratePasswords = () => {
                   answer={obj.answer}
                   mb={i === questionsAnswered.length - 1 ? 0 : 2}
                   onClick={answer => handleClick(answer)}
-                  inQueue={
-                    wordsToScramble.indexOf(obj.answer) !== -1
-                      ? wordsToScramble.indexOf(obj.answer)
-                      : false
-                  }
+                  queueNum={wordsToScramble.indexOf(obj.answer)}
                 />
               )
           )
