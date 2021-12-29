@@ -4,8 +4,6 @@ import { useHistory, useLocation } from "react-router"
 import { joinWords, scrambleWords } from "../helpers"
 import server from "../server"
 
-const LIMIT = 15
-
 const ScramblePasswords = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [scrambledWords, setScrambledWords] = useState([])
