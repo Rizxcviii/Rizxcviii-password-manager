@@ -26,17 +26,7 @@ const ScramblePasswords = () => {
     } else {
       const homoglyphs = res.val()
       const scrambledWordsArr = scrambleWords(params.split(","), homoglyphs)
-      console.log(
-        joinWords(
-          [
-            ["hello", "Hello"],
-            ["world", "World"],
-            ["john", "John", "JOhn"]
-          ],
-          ",",
-          LIMIT
-        )
-      )
+      console.log(joinWords(scrambledWordsArr, ","))
       setScrambledWords(scrambledWordsArr)
       setIsLoading(false)
     }

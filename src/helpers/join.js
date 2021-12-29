@@ -1,3 +1,5 @@
+const LIMIT = 50
+
 /**
  * - Joins words together with a separator within a 2D array. Where:
  * - The aim of this function is to create all possible permutations of words, joining only the columns, not the rows
@@ -24,7 +26,7 @@
  *  "Hello,World,JOhn"
  * ]
  */
-const joinWords = (wordsArr, separator = ".", limit = 0) => {
+const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
   if (wordsArr.length === 0) return []
   if (wordsArr.length === 1) return wordsArr[0]
 
@@ -36,9 +38,13 @@ const joinWords = (wordsArr, separator = ".", limit = 0) => {
   }
 
   // calculates the number of possible permutations
+  // however, the number of permutations is capped at the limit
   let permutations = 1
   for (let i = 0; i < wordsArr.length; i++) {
     permutations *= wordsArr[i].length
+  }
+  if (permutations > limit) {
+    permutations = limit
   }
 
   for (let i = 0; i < permutations; i++) {
