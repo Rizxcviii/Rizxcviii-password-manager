@@ -2,6 +2,9 @@ const LIMIT = 50
 
 /**
  * - Joins words together with a separator within a 2D array. Where:
+ *   - row: each inner array, such that row = wordsArr[row]
+ *   - column: each element in the inner array, where column = [wordsArr[row][x], wordsArr[row+1][x], ...], where x is constant
+ *   - new strings do not contain words in the same row
  * - The aim of this function is to create all possible permutations of words, joining only the columns, not the rows
  * @param {string[][]} wordsArr 2D array of strings, where each inner array is a row of words
  * @param {char} separator char to use as separator
