@@ -4,6 +4,8 @@ import { useHistory, useLocation } from "react-router"
 import { joinWords, scrambleWords } from "../helpers"
 import server from "../server"
 
+const LIMIT = 15
+
 const ScramblePasswords = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [scrambledWords, setScrambledWords] = useState([])
@@ -24,8 +26,18 @@ const ScramblePasswords = () => {
     } else {
       const homoglyphs = res.val()
       const scrambledWordsArr = scrambleWords(params.split(","), homoglyphs)
-      console.log(joinWords(scrambledWordsArr))
-      setScrambledWords(scrambledWords)
+      console.log(
+        joinWords(
+          [
+            ["hello", "Hello"],
+            ["world", "World"],
+            ["john", "John", "JOhn"]
+          ],
+          ",",
+          LIMIT
+        )
+      )
+      setScrambledWords(scrambledWordsArr)
       setIsLoading(false)
     }
     setIsLoading(false)
