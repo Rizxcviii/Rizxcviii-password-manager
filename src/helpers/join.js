@@ -5,7 +5,7 @@ const LIMIT = 50
  *   - row: each inner array, such that row = wordsArr[row]
  *   - column: each element in the inner array, where column = [wordsArr[row][x], wordsArr[row+1][x], ...], where x is constant
  *   - new strings do not contain words in the same row
- * - The aim of this function is to create all possible permutations of words, joining only the columns, not the rows
+ * - The aim of this function is to create a random number of permutations of the words, where the number of permutations is limited by LIMIT
  * @param {string[][]} wordsArr 2D array of strings, where each inner array is a row of words
  * @param {char} separator char to use as separator
  * @param {number} limit max number of comibnations to return
@@ -35,12 +35,6 @@ const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
 
   const generatedStrings = []
 
-  // stores the index of the word that is needed to be appened
-  const tracker = []
-  for (let i = 0; i < wordsArr.length; i++) {
-    tracker.push(0)
-  }
-
   // calculates the number of possible permutations
   // however, the number of permutations is capped at the limit
   let permutations = 1
@@ -51,19 +45,23 @@ const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
     permutations = limit
   }
 
-  for (let i = 0; i < permutations; i++) {
+  let i = 0
+
+  // while there are still words to be appended
+  while (i < permutations) {
     let str = ""
-    for (let j = 0; j < wordsArr.length; j++) {
-      str += wordsArr[j][tracker[j]] + separator
+    let j = 0
+
+    // generate a single string
+    while (j < wordsArr.length) {
+      // generates a random string in the scrambled word array
+      const randIndex = Math.floor(Math.random() * wordsArr[j].length)
+      str += wordsArr[j][randIndex] + separator
+      j++
     }
     generatedStrings.push(str.slice(0, -1))
-    tracker[tracker.length - 1]++
-    for (let j = tracker.length - 1; j >= 0; j--) {
-      if (!(tracker[j] < wordsArr[j].length)) {
-        tracker[j] = 0
-        tracker[j - 1]++
-      }
-    }
+
+    i++
   }
   return generatedStrings
 }

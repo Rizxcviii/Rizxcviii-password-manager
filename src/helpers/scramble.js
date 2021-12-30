@@ -6,7 +6,7 @@ const scrambleWords = (words, homoglyphs) => {
   return scrambledWords
 }
 
-const scrambleWordRec = (word, homoglyphs, generatedWords) => {
+const scrambleWordRec = (word = "", homoglyphs, generatedWords = []) => {
   for (const letter of word) {
     const homoglyphsForLetter = homoglyphs[letter]
     if (homoglyphsForLetter) {
