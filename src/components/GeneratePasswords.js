@@ -66,10 +66,6 @@ const GeneratePasswords = () => {
     setIsLoading(true)
     const answers = await server.read("answers")
     const questions = await server.readRoot("questions")
-    if (questions.length === 0) {
-      setIsLoading(false)
-      return
-    }
     if (answers?.err) {
       setErrMsg("There has been an error, code: " + answers?.code)
       setIsLoading(false)
@@ -79,13 +75,13 @@ const GeneratePasswords = () => {
       setIsLoading(false)
       return
     } else {
+      const questionSet = questions.val()
       const answerSet = answers.val().reduce((acc, answer, i) => {
-        if (answer) {
-          acc.push({
-            question: questions.val()[i],
-            answer
-          })
+        const params = {
+          ...answer,
+          question: questionSet.find(q => q.id === answer.questionId).question
         }
+        acc.push(params)
         return acc
       }, [])
       if (answerSet.length) {
@@ -97,13 +93,18 @@ const GeneratePasswords = () => {
 
   useEffect(() => loadAnsweredQuestions(), [])
 
-  const handleClick = answer => {
+  const handleClick = (answer, questionId) => {
     const newWordsToScramble = [...wordsToScramble]
-    const i = newWordsToScramble.indexOf(answer)
-    if (i === -1) {
-      newWordsToScramble.push(answer)
+    const answerIndex = newWordsToScramble.findIndex(
+      qa => qa.questionId === questionId
+    )
+    if (answerIndex === -1) {
+      newWordsToScramble.push({
+        questionId,
+        answer
+      })
     } else {
-      newWordsToScramble.splice(i, 1)
+      newWordsToScramble.splice(answerIndex, 1)
     }
     setWordsToScramble(newWordsToScramble)
   }
@@ -132,7 +133,9 @@ const GeneratePasswords = () => {
           type="button"
           onClick={() =>
             history.push(
-              `/scramble?words=${wordsToScramble.map(word => word).join(",")}`
+              `/scramble?words=${wordsToScramble
+                .map(answer => answer.answer)
+                .join(",")}`
             )
           }
           disabled={!wordsToScramble.length}
@@ -150,27 +153,16 @@ const GeneratePasswords = () => {
         NOTE: The order in which you select the questions will be the order in
         which the words will be scrambled.
       </Paragraph>
-      {questionsAnswered.every(answer => answer === "") ? (
-        <Paragraph
-          sx={{
-            fontWeight: "bold",
-            fontSize: 5
-          }}
-        >
-          You have not yet answered any questions. Please go to 'Answer
-          Questions' to start generating unique passwords!
-        </Paragraph>
-      ) : (
-        <Text
-          sx={{
-            fontWeight: "bold",
-            fontSize: 5
-          }}
-          mb={1}
-        >
-          Please select any of the answers below:
-        </Text>
-      )}
+      <Paragraph
+        sx={{
+          fontWeight: "bold",
+          fontSize: 5
+        }}
+      >
+        {questionsAnswered.every(answer => answer === "")
+          ? "You have not yet answered any questions. Please go to 'Answer Questions' to start generating unique passwords!"
+          : "Please select any of the answers below:"}
+      </Paragraph>
       <Box
         sx={{
           overflowY: "auto"
@@ -180,15 +172,17 @@ const GeneratePasswords = () => {
           <Spinner />
         ) : (
           questionsAnswered.map(
-            (obj, i) =>
+            (qa, i) =>
               questionsAnswered[i] && (
                 <Question
-                  key={i}
-                  question={obj.question}
-                  answer={obj.answer}
+                  key={qa.questionId}
+                  question={qa.question}
+                  answer={qa.answer}
                   mb={i === questionsAnswered.length - 1 ? 0 : 2}
-                  onClick={answer => handleClick(answer)}
-                  queueNum={wordsToScramble.indexOf(obj.answer)}
+                  onClick={() => handleClick(qa.answer, qa.questionId)}
+                  queueNum={wordsToScramble.findIndex(
+                    answerObj => answerObj.questionId === qa.questionId
+                  )}
                 />
               )
           )

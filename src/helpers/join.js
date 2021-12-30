@@ -34,7 +34,8 @@ const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
   if (wordsArr.length === 1) return wordsArr[0]
 
   const generatedStrings = []
-  // stores whcih word we want to grach each perumtation inside another array
+
+  // stores the index of the word that is needed to be appened
   const tracker = []
   for (let i = 0; i < wordsArr.length; i++) {
     tracker.push(0)
@@ -56,7 +57,6 @@ const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
       str += wordsArr[j][tracker[j]] + separator
     }
     generatedStrings.push(str.slice(0, -1))
-    console.log(tracker)
     tracker[tracker.length - 1]++
     for (let j = tracker.length - 1; j >= 0; j--) {
       if (!(tracker[j] < wordsArr[j].length)) {

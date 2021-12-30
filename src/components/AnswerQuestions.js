@@ -32,56 +32,64 @@ const Question = ({ question, answer, onChange, ...props }) => {
 }
 
 const AnswerQuestions = () => {
-  const [questionSet, setQuestionSet] = useState([])
-  const [questionsAnswered, setQuestionsAnswered] = useState([])
+  const [questionAnswerSet, setQuestionAnswerSet] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [errMsg, setErrMsg] = useState("")
 
-  const loadQuestionSet = async () => {
-    setIsLoading(true)
-    const res = await server.readRoot("questions")
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
-      setIsLoading(false)
-      return
-    } else {
-      setQuestionSet(res.val())
-    }
-    setIsLoading(false)
-  }
-
   const loadAnsweredQuestions = async () => {
-    if (!questionSet.length) return
     setIsLoading(true)
-    const res = await server.read("answers")
-    if (res?.err) {
-      setErrMsg("There has been an error, code: " + res?.code)
+    const answers = await server.read("answers")
+    const questions = await server.readRoot("questions")
+    if (answers?.err) {
+      setErrMsg("There has been an error, code: " + answers?.code)
+      setIsLoading(false)
+      return
+    } else if (questions?.err) {
+      setErrMsg("There has been an error, code: " + questions?.code)
       setIsLoading(false)
       return
     } else {
-      if (res.val() && questionSet.length - res.val().length !== 0) {
-        setQuestionsAnswered([
-          ...res.val(),
-          ...new Array(questionSet.length - res.val().length).fill("")
-        ])
-      } else if (res.val()) {
-        setQuestionsAnswered([...res.val()])
-      } else {
-        setQuestionsAnswered(new Array(questionSet.length).fill(""))
-      }
+      const answerSet = answers.val()
+      const questionSet = questions.val().reduce((acc, question, i) => {
+        const params = {
+          questionId: question.id,
+          question: question.question
+        }
+        const answer = answerSet
+          ? answerSet.find(a => a.questionId === question.id)
+          : ""
+        if (answer) {
+          params.answer = answer.answer
+        }
+        acc.push(params)
+        return acc
+      }, [])
+      setQuestionAnswerSet(questionSet)
     }
     setIsLoading(false)
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => loadQuestionSet(), [])
+  useEffect(() => loadAnsweredQuestions(), [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => loadAnsweredQuestions(), [questionSet])
+  const handleChange = (answer, id) => {
+    const newQuestionAnswerSet = [...questionAnswerSet]
+    const oldAnswer = newQuestionAnswerSet.find(qa => qa.questionId === id)
+    oldAnswer.answer = answer
+    setQuestionAnswerSet(newQuestionAnswerSet)
+  }
 
   const handleSave = async () => {
     setIsLoading(true)
-    const res = await server.update("", "answers", questionsAnswered)
+    const answers = questionAnswerSet.reduce((acc, qa) => {
+      if (qa.answer) {
+        acc.push({
+          questionId: qa.questionId,
+          answer: qa.answer
+        })
+      }
+      return acc
+    }, [])
+    const res = await server.update("", "answers", answers)
     if (res?.err) {
       setErrMsg("There has been an error, code: " + res?.code)
       setIsLoading(false)
@@ -123,19 +131,13 @@ const AnswerQuestions = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          questionSet.map((question, i) => (
+          questionAnswerSet.map((qa, i) => (
             <Question
-              key={i}
-              question={question}
-              answer={questionsAnswered?.[i] || ""}
-              mb={i === questionSet.length - 1 ? 0 : 2}
-              onChange={answer =>
-                setQuestionsAnswered([
-                  ...questionsAnswered.slice(0, i),
-                  answer,
-                  ...questionsAnswered.slice(i + 1)
-                ])
-              }
+              key={qa.id}
+              question={qa.question}
+              answer={qa.answer}
+              mb={i === questionAnswerSet.length - 1 ? 0 : 2}
+              onChange={answer => handleChange(answer, qa.questionId)}
             />
           ))
         )}
