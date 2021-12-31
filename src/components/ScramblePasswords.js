@@ -129,7 +129,11 @@ const ScramblePasswords = () => {
       return
     } else {
       const homoglyphs = res.val()
-      const scrambledWordsArr = scrambleWords(params.split(","), homoglyphs)
+      const scrambledWordsArr = scrambleWords(
+        params.split(","),
+        homoglyphs,
+        LIMIT
+      )
       const scrambledWords = joinWords(scrambledWordsArr, ",", LIMIT)
       setScrambledWords(scrambledWords)
       setIsLoading(false)

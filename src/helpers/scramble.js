@@ -1,12 +1,23 @@
-const scrambleWords = (words, homoglyphs) => {
+const scrambleWords = (words, homoglyphs, limit = 0) => {
   const scrambledWords = []
   for (const word of words) {
-    scrambledWords.push(scrambleWordRec(word.toLowerCase(), homoglyphs, []))
+    scrambledWords.push(
+      scrambleWordRec(word.toLowerCase(), homoglyphs, [], limit)
+    )
   }
   return scrambledWords
 }
 
-const scrambleWordRec = (word = "", homoglyphs, generatedWords = []) => {
+const scrambleWordRec = (
+  word = "",
+  homoglyphs,
+  generatedWords = [],
+  limit = 0
+) => {
+  if (limit && generatedWords.length >= limit) {
+    console.log(true)
+    return generatedWords
+  }
   for (const letter of word) {
     const homoglyphsForLetter = homoglyphs[letter]
     if (homoglyphsForLetter) {
@@ -14,7 +25,7 @@ const scrambleWordRec = (word = "", homoglyphs, generatedWords = []) => {
         const newWord = word.replace(letter, homoglyph)
         if (generatedWords.includes(newWord)) continue
         generatedWords.push(newWord)
-        scrambleWordRec(newWord, homoglyphs, generatedWords)
+        scrambleWordRec(newWord, homoglyphs, generatedWords, limit)
       }
     }
   }
