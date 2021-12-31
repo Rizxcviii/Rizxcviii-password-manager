@@ -90,5 +90,27 @@ export const theme = Theme => ({
       color: "light",
       fontFamily: "Centra"
     }
+  },
+  forms: {
+    label: {
+      fontFamily: "Centra",
+      fontWeight: 400,
+      fontSize: 3
+    },
+    input: {
+      fontFamily: "Centra",
+      fontWeight: 100,
+      fontSize: 3
+    },
+    textarea: {
+      fontFamily: "Centra",
+      fontWeight: 100,
+      fontSize: 3
+    },
+    select: {
+      fontFamily: "Centra",
+      fontWeight: 100,
+      fontSize: 3
+    }
   }
 })

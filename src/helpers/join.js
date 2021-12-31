@@ -27,7 +27,7 @@
  *  "Hello,World,JOhn"
  * ]
  */
-const joinWords = (wordsArr, separator = ".", limit = 0) => {
+const joinWords = (wordsArr, limit = 0, options = {}) => {
   if (wordsArr.length === 0) return []
 
   const generatedStrings = []
@@ -53,10 +53,11 @@ const joinWords = (wordsArr, separator = ".", limit = 0) => {
     while (j < wordsArr.length) {
       // generates a random string in the scrambled word array
       const randIndex = Math.floor(Math.random() * wordsArr[j].length)
-      str += wordsArr[j][randIndex] + separator
+      str += wordsArr[j][randIndex] + options.separator
       j++
     }
-    generatedStrings.push(str.slice(0, -1))
+    const regex = new RegExp(`${options.separator}$`)
+    generatedStrings.push(str.replace(regex, ""))
 
     i++
   }

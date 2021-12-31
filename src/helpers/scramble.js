@@ -14,11 +14,16 @@ const scrambleWordRec = (
   generatedWords = [],
   limit = 0
 ) => {
-  if (limit && generatedWords.length >= limit) {
-    console.log(true)
-    return generatedWords
+  if (limit && generatedWords.length >= limit) return generatedWords
+
+  const randLetters = []
+  const randIterable = Math.floor(Math.random() * word.length) + 1
+  for (let i = 0; i < randIterable; i++) {
+    const randIndex = Math.floor(Math.random() * word.length)
+    randLetters.push(word[randIndex])
   }
-  for (const letter of word) {
+
+  for (const letter of randLetters) {
     const homoglyphsForLetter = homoglyphs[letter]
     if (homoglyphsForLetter) {
       for (const homoglyph of homoglyphsForLetter) {
