@@ -12,6 +12,8 @@ import { joinWords, scrambleWords } from "../helpers"
 import server from "../server"
 import Notification from "./ui/Notification"
 
+const LIMIT = 50
+
 const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
   const [showAddPassword, setShowAddPassword] = useState(false)
   const [useCaseInput, setUseCaseInput] = useState("")
@@ -128,7 +130,7 @@ const ScramblePasswords = () => {
     } else {
       const homoglyphs = res.val()
       const scrambledWordsArr = scrambleWords(params.split(","), homoglyphs)
-      const scrambledWords = joinWords(scrambledWordsArr)
+      const scrambledWords = joinWords(scrambledWordsArr, ",", LIMIT)
       setScrambledWords(scrambledWords)
       setIsLoading(false)
     }
@@ -179,9 +181,10 @@ const ScramblePasswords = () => {
           {scrambledWords && (
             <>
               <Paragraph>
-                Here are a selection of randomly generated passwords, scrambled
-                based on your choices. If you would like to generate a new set
-                of passwords, click the button below.
+                Here are a selection of 50 randomly generated passwords,
+                scrambled based on your filters/choices of responses. If you
+                would like to generate a new set of passwords, click the button
+                below.
               </Paragraph>
               <Button
                 onClick={() => scramble()}

@@ -1,5 +1,3 @@
-const LIMIT = 50
-
 /**
  * - Joins words together with a separator within a 2D array. Where:
  *   - row: each inner array, such that row = wordsArr[row]
@@ -29,9 +27,8 @@ const LIMIT = 50
  *  "Hello,World,JOhn"
  * ]
  */
-const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
+const joinWords = (wordsArr, separator = ".", limit = 0) => {
   if (wordsArr.length === 0) return []
-  if (wordsArr.length === 1) return wordsArr[0]
 
   const generatedStrings = []
 
@@ -41,7 +38,7 @@ const joinWords = (wordsArr, separator = ".", limit = LIMIT) => {
   for (let i = 0; i < wordsArr.length; i++) {
     permutations *= wordsArr[i].length
   }
-  if (permutations > limit) {
+  if (limit && permutations > limit) {
     permutations = limit
   }
 
