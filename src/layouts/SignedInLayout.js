@@ -1,6 +1,6 @@
 import React from "react"
 import { useHistory } from "react-router"
-import { Box, Button, Flex } from "theme-ui"
+import { Box, Button, Flex, Heading, IconButton } from "theme-ui"
 import BaseLayout from "./BaseLayout"
 
 const Footer = () => {
@@ -60,8 +60,31 @@ const Footer = () => {
   )
 }
 
+const Header = () => {
+  return (
+    <Flex
+      sx={{
+        justifyContent: "space-between"
+      }}
+    >
+      <Heading as="h1" sx={{ fontSize: 5 }}>
+        Rizxcviii Password Manager
+      </Heading>
+      <IconButton>
+        <abbr title="Settings">
+          <img
+            alt="Access Settings"
+            src={`${process.env.PUBLIC_URL}/img/settings.svg`}
+            width="24px"
+          />
+        </abbr>
+      </IconButton>
+    </Flex>
+  )
+}
+
 const SignedInLayout = ({ children }) => (
-  <BaseLayout footer={Footer()}>
+  <BaseLayout pt={0} header={Header()} footer={Footer()}>
     <Box mb="60px">{children}</Box>
   </BaseLayout>
 )
