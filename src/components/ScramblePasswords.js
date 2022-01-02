@@ -236,7 +236,8 @@ const ScramblePasswords = () => {
     <Flex
       sx={{
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        height: "500px"
       }}
     >
       <Filter filters={filters} setFilters={setFilters} />
