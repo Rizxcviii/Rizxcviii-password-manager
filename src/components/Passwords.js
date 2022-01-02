@@ -11,6 +11,7 @@ import {
 } from "@theme-ui/components"
 import { useEffect, useState } from "react"
 import server from "../server"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
@@ -300,7 +301,7 @@ const Passwords = () => {
         }}
       >
         {isLoading ? (
-          <Spinner />
+          <Loader message="Loading your saved passwords..." />
         ) : (
           <PasswordList
             passwords={passwords}

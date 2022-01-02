@@ -4,12 +4,12 @@ import {
   Flex,
   Heading,
   Paragraph,
-  Spinner,
   Text
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router"
 import server from "../server"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const Question = ({ question, answer, onClick, queueNum, ...props }) => (
@@ -169,7 +169,7 @@ const GeneratePasswords = () => {
         }}
       >
         {isLoading ? (
-          <Spinner />
+          <Loader message="Loading answered questions..." />
         ) : (
           questionsAnswered.map(
             (qa, i) =>

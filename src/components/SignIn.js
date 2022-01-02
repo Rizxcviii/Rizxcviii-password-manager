@@ -1,6 +1,7 @@
-import { Button, Flex, Input, Paragraph, Spinner } from "@theme-ui/components"
+import { Button, Flex, Input, Paragraph } from "@theme-ui/components"
 import React, { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const SignIn = () => {
@@ -57,7 +58,7 @@ const SignIn = () => {
         required
       />
       {getIsLoading() ? (
-        <Spinner sx={{ alignSelf: "center" }} />
+        <Loader message="Authenticating your login credentials..." />
       ) : (
         <Button
           sx={{

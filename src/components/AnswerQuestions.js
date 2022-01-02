@@ -5,11 +5,11 @@ import {
   Heading,
   Input,
   Paragraph,
-  Spinner,
   Text
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
 import server from "../server"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const Question = ({ question, answer, onChange, ...props }) => {
@@ -129,7 +129,7 @@ const AnswerQuestions = () => {
         }}
       >
         {isLoading ? (
-          <Spinner />
+          <Loader message="Loading questions and answers..." />
         ) : (
           questionAnswerSet.map((qa, i) => (
             <Question

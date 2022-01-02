@@ -186,6 +186,7 @@ const Filter = ({ filters, setFilters }) => {
           }}
           variant="outline.primary"
           onClick={() => setShowFilter(false)}
+          type="button"
         >
           Close
         </Button>

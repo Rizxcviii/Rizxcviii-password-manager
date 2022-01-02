@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { useHistory } from "react-router"
 import { useAuth } from "../contexts/AuthContext"
 import server from "../server"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const CreateKeyCode = () => {
@@ -106,7 +107,7 @@ const ConfirmKeyCode = ({ keycode }) => {
         placeholder="keycode..."
       />
       {isLoading ? (
-        <Spinner />
+        <Loader message="Verfiying your keycode..." />
       ) : (
         <Flex
           mt={2}

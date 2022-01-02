@@ -1,14 +1,8 @@
-import {
-  Button,
-  Flex,
-  Input,
-  Paragraph,
-  Spinner,
-  Text
-} from "@theme-ui/components"
+import { Button, Flex, Input, Paragraph, Text } from "@theme-ui/components"
 import React, { useState } from "react"
 import { useAuth } from "../contexts/AuthContext"
 import server from "../server"
+import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const SignUp = () => {
@@ -72,7 +66,7 @@ const SignUp = () => {
       />
       <Text>Minimum 6 characters are required</Text>
       {getIsLoading() ? (
-        <Spinner sx={{ alignSelf: "center" }} />
+        <Loader message="Creating your account..." />
       ) : (
         <Button
           sx={{
