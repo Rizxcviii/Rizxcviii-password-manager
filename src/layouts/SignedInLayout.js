@@ -1,6 +1,6 @@
 import React from "react"
 import { useHistory } from "react-router"
-import { Box, Button, Flex, Heading, IconButton } from "theme-ui"
+import { Box, Button, Divider, Flex, Heading, IconButton } from "theme-ui"
 import BaseLayout from "./BaseLayout"
 
 const Footer = () => {
@@ -61,25 +61,34 @@ const Footer = () => {
 }
 
 const Header = () => {
+  const history = useHistory()
   return (
-    <Flex
-      sx={{
-        justifyContent: "space-between"
-      }}
-    >
-      <Heading as="h1" sx={{ fontSize: 5 }}>
-        Rizxcviii Password Manager
-      </Heading>
-      <IconButton>
-        <abbr title="Settings">
-          <img
-            alt="Access Settings"
-            src={`${process.env.PUBLIC_URL}/img/settings.svg`}
-            width="24px"
-          />
-        </abbr>
-      </IconButton>
-    </Flex>
+    <Box>
+      <Flex
+        sx={{
+          justifyContent: "space-between"
+        }}
+      >
+        <Heading as="h1" sx={{ fontSize: 5 }}>
+          Rizxcviii Password Manager
+        </Heading>
+        <IconButton onClick={() => history.push("/settings")}>
+          <abbr title="Settings">
+            <img
+              alt="Access Settings"
+              src={`${process.env.PUBLIC_URL}/img/settings.svg`}
+              width="24px"
+            />
+          </abbr>
+        </IconButton>
+      </Flex>
+      <Divider
+        sx={{
+          width: "90%",
+          mx: "auto"
+        }}
+      />
+    </Box>
   )
 }
 

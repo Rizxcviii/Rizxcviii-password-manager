@@ -5,6 +5,7 @@ import GeneratePasswords from "./components/GeneratePasswords"
 import Keycode from "./components/Keycode"
 import Passwords from "./components/Passwords"
 import ScramblePasswords from "./components/ScramblePasswords"
+import Settings from "./components/Settings"
 import SignIn from "./components/SignIn"
 import SignUp from "./components/SignUp"
 import { useAuth } from "./contexts/AuthContext"
@@ -51,7 +52,7 @@ const SignedOutRoutes = () => {
 const SignedInRoutes = () => {
   return (
     <>
-      <Route path="/passwords">
+      <Route exact path={["/passwords", "/"]}>
         <SignedInLayout>
           <Passwords />
         </SignedInLayout>
@@ -69,6 +70,11 @@ const SignedInRoutes = () => {
       <Route path="/scramble">
         <SignedInLayout>
           <ScramblePasswords />
+        </SignedInLayout>
+      </Route>
+      <Route path="/settings">
+        <SignedInLayout>
+          <Settings />
         </SignedInLayout>
       </Route>
     </>

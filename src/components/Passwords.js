@@ -279,7 +279,8 @@ const Passwords = () => {
   return (
     <Flex
       sx={{
-        flexDirection: "column"
+        flexDirection: "column",
+        height: "470px"
       }}
     >
       <Heading as="h1">Your Vault</Heading>

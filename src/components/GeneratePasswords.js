@@ -113,7 +113,7 @@ const GeneratePasswords = () => {
     <Flex
       sx={{
         flexDirection: "column",
-        height: "500px"
+        height: "470px"
       }}
     >
       <Heading as="h1">Generate Passwords</Heading>

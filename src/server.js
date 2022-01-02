@@ -86,7 +86,10 @@ class Server {
    * Signs out the current user
    * @returns The sign out verification
    */
-  singOut = async () => signOut(this.#auth)
+  signOut = async () => {
+    const res = await this.#makeCall(signOut, this.#auth)
+    return res
+  }
 
   /**
    * Observer to detect new state changes to the auth state

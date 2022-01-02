@@ -25,9 +25,12 @@ export const AuthProvider = ({ children }) => {
     return res
   }
 
-  const signOut = () => {
+  const signOut = async () => {
     setIsLoading(true)
-    return server.singOut()
+    const res = await server.signOut()
+    if (res?.error) setIsLoading(false)
+    else setIsConfirmed(false)
+    return res
   }
 
   const signUp = async (email, password) => {
