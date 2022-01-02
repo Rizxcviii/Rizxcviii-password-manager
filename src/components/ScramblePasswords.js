@@ -57,7 +57,8 @@ const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
         borderRadius: "5px",
         textAlign: "center",
         ":hover": {
-          cursor: !showAddPassword ? "pointer" : "default"
+          cursor: !showAddPassword ? "pointer" : "default",
+          backgroundColor: !showAddPassword ? "grey" : "initial"
         },
         p: 2,
         mb: lastEl ? 0 : 2
@@ -289,8 +290,8 @@ const ScramblePasswords = () => {
                 }}
                 mb={3}
               >
-                NOTE: The following passwords are not the maximum combinations,
-                but only a subset.
+                NOTE: The following passwords are not the maximum number of
+                combinations, but only a subset.
               </Paragraph>
             </>
           )}
