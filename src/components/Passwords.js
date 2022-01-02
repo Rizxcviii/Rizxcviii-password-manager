@@ -5,6 +5,7 @@ import {
   Heading,
   IconButton,
   Input,
+  Label,
   Paragraph,
   Spinner,
   Text
@@ -62,35 +63,33 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
           }}
         >
           Use the below space to add a new password. Or edit a new password by
-          using the same use case, as before.
+          using the same use case.
         </Paragraph>
-        <Input
-          onChange={e => setUseCaseInput(e.target.value)}
-          type="text"
-          placeholder="Use Case"
-        />
-        <Text
-          sx={{
-            fontSize: 2
-          }}
-        >
-          *The following characters cannot be used: <br />
-        </Text>
-        <Text
-          sx={{
-            fontSize: 2,
-            fontWeight: "bold"
-          }}
-        >
-          {falesValues.join(` , `)}
-        </Text>
-        <Input
-          onChange={e => setPasswordInput(e.target.value)}
-          mt={2}
-          type="password"
-          placeholder="Password"
-          mb={2}
-        />
+        <Box mt={2}>
+          <Label htmlFor="useCase">Use Case</Label>
+          <Input
+            onChange={e => setUseCaseInput(e.target.value)}
+            type="text"
+            placeholder="Use Case"
+          />
+          <Paragraph
+            sx={{
+              fontSize: 2
+            }}
+          >
+            *The following characters cannot be used: <br />{" "}
+            <b>{falesValues.join(` , `)}</b>
+          </Paragraph>
+        </Box>
+        <Box mt={2}>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            onChange={e => setPasswordInput(e.target.value)}
+            type="password"
+            placeholder="Password"
+            mb={2}
+          />
+        </Box>
         <Flex mt={3} width={1 / 1}>
           {isLoading ? (
             <Spinner />
@@ -166,7 +165,10 @@ const Password = ({
       </Text>
       <Text
         sx={{
-          flexBasis: "100%"
+          flexBasis: "100%",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          overflow: "hidden"
         }}
       >
         {showPassword ? password : "*".repeat(password.length)}
