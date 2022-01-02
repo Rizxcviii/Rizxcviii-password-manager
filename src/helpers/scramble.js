@@ -1,9 +1,11 @@
 const scrambleWords = (words, homoglyphs, limit = 0) => {
   const scrambledWords = []
   for (const word of words) {
-    scrambledWords.push(
-      scrambleWordRec(word.toLowerCase(), homoglyphs, [], limit)
-    )
+    let scrambledWordArr = scrambleWordRec(word, homoglyphs, [], limit)
+    while (scrambledWordArr.length === 0) {
+      scrambledWordArr = scrambleWordRec(word, homoglyphs, [], limit)
+    }
+    scrambledWords.push(scrambledWordArr)
   }
   return scrambledWords
 }
