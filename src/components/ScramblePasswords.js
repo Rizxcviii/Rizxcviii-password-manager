@@ -23,8 +23,8 @@ const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
   const handleAddPassword = async e => {
     e.preventDefault()
     setIsSaving(true)
-    const form = new FormData(e.target)
-    const useCase = form.get("useCase")
+    const data = new FormData(e.target)
+    const useCase = data.get("useCase")
     if (!useCase) {
       setErrMsg("Please enter a use case.")
       setIsSaving(false)

@@ -6,14 +6,16 @@ import Notification from "./ui/Notification"
 
 const SignIn = () => {
   const { signIn, getIsLoading } = useAuth()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
 
   const handleSubmit = async e => {
     e.preventDefault()
+    const data = new FormData(e.target)
+    const email = data.get("email")
+    const password = data.get("password")
     const res = await signIn(email, password)
     if (res.error) {
+      console.log(res.code)
       switch (res.code) {
         case "auth/wrong-password":
           setErrorMsg("You have entered the incorrect password.")
@@ -39,20 +41,14 @@ const SignIn = () => {
       sx={{
         flexDirection: "column"
       }}
+      as="form"
+      onSubmit={handleSubmit}
     >
       <Paragraph mb={2}>Please sign in below:</Paragraph>
+      <Input type="email" name="email" placeholder="Email" mb={3} required />
       <Input
-        onChange={e => setEmail(e.target.value)}
-        value={email}
-        type="email"
-        placeholder="Email"
-        mb={3}
-        required
-      />
-      <Input
-        onChange={e => setPassword(e.target.value)}
-        value={password}
         type="password"
+        name="password"
         placeholder="Password"
         mb={3}
         required
@@ -64,15 +60,10 @@ const SignIn = () => {
           sx={{
             width: "180px",
             fontSize: 5,
-            alignSelf: "center",
-            background: email && password ? "primary" : "grey",
-            "&:hover": {
-              cursor: email && password ? "pointer" : "not-allowed"
-            }
+            alignSelf: "center"
           }}
           type="submit"
           mb={3}
-          onClick={handleSubmit}
         >
           Login
         </Button>

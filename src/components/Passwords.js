@@ -18,29 +18,31 @@ import Notification from "./ui/Notification"
 const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAddPassword, setShowAddPassword] = useState(false)
-  const [passwordInput, setPasswordInput] = useState("")
-  const [useCaseInput, setUseCaseInput] = useState("")
 
   const falesValues = [".", "#", "$", "/", "[", "]"]
 
   const handleAddPasswordSubmit = async e => {
     e.preventDefault()
-    if (falesValues.some(el => useCaseInput.includes(el))) {
+    setIsLoading(true)
+    const data = new FormData(e.target)
+    const useCase = data.get("useCase")
+    const password = data.get("password")
+    if (falesValues.some(el => useCase.includes(el))) {
       setErrMsg(
         "The use case cannot contain the following characters: " +
           falesValues.join(` , `)
       )
+      setIsLoading(false)
       return
     }
-    setIsLoading(true)
-    const res = await server.update("passwords", useCaseInput, passwordInput)
+    const res = await server.update("passwords", useCase, password)
     if (res?.error) {
       console.log(res)
       setErrMsg(
         "There was an error adding your password. Please try again later."
       )
     } else {
-      setMsg("Password " + useCaseInput + " added.")
+      setMsg("Password " + useCase + " added.")
       onLoad()
     }
     setIsLoading(false)
@@ -67,11 +69,7 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
         </Paragraph>
         <Box mt={2}>
           <Label htmlFor="useCase">Use Case</Label>
-          <Input
-            onChange={e => setUseCaseInput(e.target.value)}
-            type="text"
-            placeholder="Use Case"
-          />
+          <Input type="text" placeholder="Use Case" name="useCase" required />
           <Paragraph
             sx={{
               fontSize: 2
@@ -84,10 +82,11 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
         <Box mt={2}>
           <Label htmlFor="password">Password</Label>
           <Input
-            onChange={e => setPasswordInput(e.target.value)}
             type="password"
             placeholder="Password"
+            name="password"
             mb={2}
+            required
           />
         </Box>
         <Flex mt={3} width={1 / 1}>

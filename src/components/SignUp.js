@@ -6,15 +6,20 @@ import Loader from "./ui/Loader"
 import Notification from "./ui/Notification"
 
 const SignUp = () => {
-  const [pass1, setPass1] = useState("")
-  const [pass2, setPass2] = useState("")
-  const [email, setEmail] = useState("")
   const [errorMsg, setErrorMsg] = useState("")
   const { signUp, getIsLoading } = useAuth()
 
   const handleSubmit = async e => {
     e.preventDefault()
-    const res = await signUp(email, pass1)
+    const data = new FormData(e.target)
+    const email = data.get("email")
+    const password = data.get("password")
+    const confirmPassword = data.get("confirm-password")
+    if (password !== confirmPassword) {
+      setErrorMsg("Passwords do not match.")
+      return
+    }
+    const res = await signUp(email, password)
     if (res.error) {
       switch (res.code) {
         case "auth/email-already-in-use":
@@ -24,7 +29,7 @@ const SignUp = () => {
           setErrorMsg("An unknown error occurred, code: " + res.code)
       }
     } else {
-      server.write("passwords", "rizxcviii-pm", pass1)
+      server.write("passwords", "rizxcviii-pm", password)
     }
   }
 
@@ -37,17 +42,12 @@ const SignUp = () => {
       onSubmit={handleSubmit}
     >
       <Paragraph mb={2}>Please sign up below:</Paragraph>
-      <Input
-        type="email"
-        placeholder="Email"
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
+      <Input type="email" placeholder="Email" name="email" required />
       <Input
         mt={3}
         type="password"
         placeholder="Password"
-        onChange={e => setPass1(e.target.value)}
+        name="password"
         minLength={6}
         required
         mb={1}
@@ -60,7 +60,7 @@ const SignUp = () => {
         mb={1}
         type="password"
         placeholder="Confirm Password"
-        onChange={e => setPass2(e.target.value)}
+        name="confirm-password"
         minLength={6}
         required
       />
@@ -72,15 +72,10 @@ const SignUp = () => {
           sx={{
             width: "180px",
             fontSize: 5,
-            alignSelf: "center",
-            background: pass1 !== pass2 || !pass1 ? "grey" : "primary",
-            "&:hover": {
-              cursor: pass1 !== pass2 || !pass1 ? "not-allowed" : "pointer"
-            }
+            alignSelf: "center"
           }}
           mt={3}
           type="submit"
-          disabled={pass1 !== pass2 || !pass1}
         >
           Register
         </Button>

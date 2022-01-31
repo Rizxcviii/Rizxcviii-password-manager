@@ -8,14 +8,15 @@ import Notification from "./ui/Notification"
 
 const CreateKeyCode = () => {
   const [isLoading, setIsLoading] = useState(false)
-  const [code, setCode] = useState("")
   const { signOut, setIsConfirmed } = useAuth()
   const history = useHistory()
 
   const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
-    const res = await server.write(`settings`, "keycode", code)
+    const data = new FormData(e.target)
+    const keycode = data.get("keycode")
+    const res = await server.write(`settings`, "keycode", keycode)
     if (res?.err) {
       console.log(res)
       setIsLoading(false)
@@ -32,10 +33,10 @@ const CreateKeyCode = () => {
     <Flex sx={{ flexDirection: "column" }} as="form" onSubmit={handleSubmit}>
       <Paragraph>Please enter a keycode to secure your vault</Paragraph>
       <Input
+        required
         mt={2}
-        onChange={e => setCode(e.target.value)}
-        value={code}
         type="password"
+        name="keycode"
         placeholder="keycode..."
       />
       {isLoading ? (
@@ -77,13 +78,14 @@ const CreateKeyCode = () => {
 const ConfirmKeyCode = ({ keycode }) => {
   const [isLoading, setIsLoading] = useState(false)
   const history = useHistory()
-  const [code, setCode] = useState("")
   const [errMsg, setErrMsg] = useState("")
   const { signOut, setIsConfirmed } = useAuth()
 
   const handleSubmit = async e => {
     e.preventDefault()
     setIsLoading(true)
+    const data = new FormData(e.target)
+    const code = data.get("keycode")
     if (code === keycode) {
       setIsConfirmed(true)
       setIsLoading(false)
@@ -100,10 +102,10 @@ const ConfirmKeyCode = ({ keycode }) => {
     <Flex sx={{ flexDirection: "column" }} as="form" onSubmit={handleSubmit}>
       <Paragraph>Please enter you keycode</Paragraph>
       <Input
+        required
         mt={2}
-        onChange={e => setCode(e.target.value)}
-        value={code}
         type="password"
+        name="keycode"
         placeholder="keycode..."
       />
       {isLoading ? (
