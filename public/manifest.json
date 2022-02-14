@@ -3,7 +3,7 @@
   "description": "A password management extension that generates USEFUL passwords",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["tabs", "activeTab", "storage", "webRequest", "<all_urls>"],
+  "permissions": ["tabs", "activeTab", "storage", "webRequest"],
   "action": {
     "default_popup": "index.html",
     "default_title": "Enter your vault (Remember your keyword...?)"
@@ -22,5 +22,6 @@
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
-  }
+  },
+  "host_permissions": ["<all_urls>"]
 }
