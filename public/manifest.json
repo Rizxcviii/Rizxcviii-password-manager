@@ -2,20 +2,25 @@
   "name": "Rizxcviiis' Password Manager",
   "description": "A password management extension that generates USEFUL passwords",
   "version": "1.0",
-  "manifest_version": 2,
-  "permissions": ["storage"],
-  "browser_action": {
+  "manifest_version": 3,
+  "permissions": ["tabs", "activeTab", "storage", "webRequest", "<all_urls>"],
+  "action": {
     "default_popup": "index.html",
     "default_title": "Enter your vault (Remember your keyword...?)"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persist": false
+    "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_end"
+    }
+  ],
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
     "128": "logo192.png"
-  },
-  "content_security_policy": "script-src 'self' https://*.firebasedatabase.app https://cdn.firebase.com https://*.firebaseio.com; object-src 'self'"
+  }
 }
