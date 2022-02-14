@@ -15,7 +15,6 @@ const SignIn = () => {
     const password = data.get("password")
     const res = await signIn(email, password)
     if (res.error) {
-      console.log(res.code)
       switch (res.code) {
         case "auth/wrong-password":
           setErrorMsg("You have entered the incorrect password.")
