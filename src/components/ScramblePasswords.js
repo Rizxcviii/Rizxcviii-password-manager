@@ -143,7 +143,7 @@ const FilterModal = ({ filters, setFilters }) => {
   }
 
   return createPortal(
-    <Modal onClose={() => setShowFilter(false)} width="100%">
+    <Modal boxShadow="" onClose={() => setShowFilter(false)} width="100%">
       <Box
         as="form"
         sx={{
@@ -151,7 +151,9 @@ const FilterModal = ({ filters, setFilters }) => {
           border: "1px solid",
           borderRadius: "5px",
           p: 2,
-          mx: 4
+          mx: 4,
+          boxShadow:
+            "0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)"
         }}
         onClick={e => e.stopPropagation()}
         onSubmit={handleChangeFilter}
@@ -163,21 +165,101 @@ const FilterModal = ({ filters, setFilters }) => {
             justifyContent: "space-between"
           }}
         >
-          <Label htmlFor="separator">Separator (Defaults to ',' [comma])</Label>
-          <Input
-            type="text"
-            defaultValue={filters.separator}
-            name="separator"
-            placeholder="Separator"
-            mb={2}
-          />
-          <Label htmlFor="remove">Remove</Label>
-          <Input
-            type="text"
-            name="remove"
-            defaultValue={filters.remove}
-            placeholder="Characters to remove"
-          />
+          <Box mb={2}>
+            <Label htmlFor="separator">
+              Separator (Defaults to ',' [comma])
+            </Label>
+            <Input
+              id="separator"
+              type="text"
+              defaultValue={filters.separator}
+              name="separator"
+              placeholder="Separator"
+            />
+          </Box>
+          <Box mb={2}>
+            <Label htmlFor="remove">Remove</Label>
+            <Input
+              id="remove"
+              type="text"
+              name="remove"
+              defaultValue={filters.remove}
+              placeholder="Characters to remove"
+            />
+          </Box>
+          <Box mb={2}>
+            <Label htmlFor="minCharacters">
+              Minimum characters (Defaults to -1 [no limit])
+            </Label>
+            <Input
+              id="minCharacters"
+              type="number"
+              name="minCharacters"
+              min={-1}
+              defaultValue={filters.minCharacters}
+              placeholder="Minimum characters"
+              sx={{
+                width: "56px"
+              }}
+            />
+          </Box>
+          <Flex
+            sx={{
+              justifyContent: "space-around",
+              flexDirection: "row"
+            }}
+          >
+            <Flex
+              sx={{
+                flexDirection: "column",
+                justifyContent: "space-around"
+              }}
+            >
+              <Label htmlFor="upperCase">
+                <input
+                  id="upperCase"
+                  type="checkbox"
+                  name="upperCase"
+                  defaultChecked={filters.upperCase}
+                />
+                Upper case
+              </Label>
+              <Label htmlFor="lowerCase">
+                <input
+                  id="lowerCase"
+                  type="checkbox"
+                  name="lowerCase"
+                  defaultChecked={filters.lowerCase}
+                />
+                Lower case
+              </Label>
+            </Flex>
+            <Flex
+              sx={{
+                flexDirection: "column",
+                justifyContent: "space-between"
+              }}
+            >
+              <Label htmlFor="numbers">
+                <input
+                  id="numbers"
+                  type="checkbox"
+                  name="numbers"
+                  defaultChecked={filters.numbers}
+                />
+                Numbers
+              </Label>
+              <Label htmlFor="symbols">
+                <input
+                  id="symbols"
+                  type="checkbox"
+                  name="symbols"
+                  defaultChecked={filters.symbols}
+                />
+                Symbols
+              </Label>
+            </Flex>
+          </Flex>
         </Flex>
         <Flex
           sx={{
@@ -189,14 +271,14 @@ const FilterModal = ({ filters, setFilters }) => {
           <Button
             type="submit"
             sx={{
-              width: "150px"
+              width: "140px"
             }}
           >
             Filter
           </Button>
           <Button
             sx={{
-              width: "150px"
+              width: "140px"
             }}
             variant="outline.primary"
             onClick={() => setShowFilter(false)}
