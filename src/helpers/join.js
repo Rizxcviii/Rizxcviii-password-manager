@@ -56,6 +56,7 @@ const joinWords = (wordsArr, limit = 0, options = {}) => {
       str += wordsArr[j][randIndex] + options.separator
       j++
     }
+    // remove the last separator
     const regex = new RegExp(`${options.separator}$`)
     generatedStrings.push(str.replace(regex, ""))
 

@@ -1,9 +1,29 @@
-const scrambleWords = (words, homoglyphs, limit = 0) => {
+const scrambleWords = (words, homoglyphs, limit = 0, filters) => {
   const scrambledWords = []
   for (const word of words) {
-    let scrambledWordArr = scrambleWordRec(word, homoglyphs, [], limit)
-    while (scrambledWordArr.length === 0) {
-      scrambledWordArr = scrambleWordRec(word, homoglyphs, [], limit)
+    let newWord = ""
+    for (const letter of word) {
+      if (filters.remove.includes(letter)) continue
+      newWord += letter
+    }
+    let scrambledWordArr = scrambleWordRec(
+      newWord,
+      homoglyphs,
+      [],
+      limit,
+      filters
+    )
+    if (!scrambledWordArr.length) {
+      const retryCount = 10
+      for (let i = 0; i < retryCount; i++) {
+        scrambledWordArr = scrambleWordRec(
+          newWord,
+          homoglyphs,
+          [],
+          limit,
+          filters
+        )
+      }
     }
     scrambledWords.push(scrambledWordArr)
   }

@@ -162,9 +162,20 @@ const Filter = ({ filters, setFilters }) => {
         }}
       >
         <Label htmlFor="separator">Separator (Defaults to ',' [comma])</Label>
-        <Input type="text" name="separator" placeholder="Separator" mb={2} />
+        <Input
+          type="text"
+          defaultValue={filters.separator}
+          name="separator"
+          placeholder="Separator"
+          mb={2}
+        />
         <Label htmlFor="remove">Remove</Label>
-        <Input type="text" name="remove" placeholder="Characters to remove" />
+        <Input
+          type="text"
+          name="remove"
+          defaultValue={filters.remove}
+          placeholder="Characters to remove"
+        />
       </Flex>
       <Flex
         sx={{
@@ -221,9 +232,12 @@ const ScramblePasswords = () => {
       const scrambledWordsArr = scrambleWords(
         params.split(","),
         homoglyphs,
-        LIMIT
+        LIMIT,
+        { remove: filters.remove }
       )
-      const scrambledWords = joinWords(scrambledWordsArr, LIMIT, filters)
+      const scrambledWords = joinWords(scrambledWordsArr, LIMIT, {
+        separator: filters.separator
+      })
       setScrambledWords(scrambledWords)
       setIsLoading(false)
     }
