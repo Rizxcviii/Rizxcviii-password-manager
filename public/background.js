@@ -46,10 +46,12 @@ chrome.runtime.onMessage.addListener(async message => {
           password: state.password
         }
       })
+      break
     case "SAVE_CREDENTIALS":
       const res = await server.update("passwords", ...message.payload)
       if (res.error) {
         console.log(res.error)
+      } else {
       }
 
       break
