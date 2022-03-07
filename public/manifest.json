@@ -8,16 +8,6 @@
     "default_popup": "index.html",
     "default_title": "Enter your vault (Remember your keyword...?)"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content-script.js"],
-      "run_at": "document_end"
-    }
-  ],
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",
