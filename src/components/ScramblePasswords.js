@@ -132,6 +132,7 @@ const FilterModal = ({ filters, setFilters }) => {
       numbers: form.get("numbers") || false,
       symbols: form.get("symbols") || false
     })
+    setShowFilter(false)
   }
 
   if (!showFilter) {
