@@ -1,3 +1,5 @@
+/* global chrome */
+
 import { createContext, useContext, useEffect, useState } from "react"
 import server from "../server"
 
@@ -22,6 +24,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true)
     const res = await server.signIn(email, password)
     if (res.error) setIsLoading(false)
+    chrome.storage.local.set({ currentUser: res.val() })
     return res
   }
 
@@ -30,6 +33,7 @@ export const AuthProvider = ({ children }) => {
     const res = await server.signOut()
     if (res?.error) setIsLoading(false)
     else setIsConfirmed(false)
+    chrome.storage.local.remove("currentUser")
     return res
   }
 
@@ -37,6 +41,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true)
     const res = await server.createUser(email, password)
     if (res.error) setIsLoading(false)
+    chrome.storage.local.set({ currentUser: res.val() })
     return res
   }
 

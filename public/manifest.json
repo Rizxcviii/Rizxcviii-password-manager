@@ -3,11 +3,12 @@
   "description": "A password management extension that generates USEFUL passwords",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["tabs", "activeTab", "storage", "webRequest", "<all_urls>"],
+  "permissions": ["tabs", "activeTab", "storage"],
   "action": {
     "default_popup": "index.html",
     "default_title": "Enter your vault (Remember your keyword...?)"
   },
+  "host_permissions": ["<all_urls>"],
   "background": {
     "service_worker": "background.js"
   },
