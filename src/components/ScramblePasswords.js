@@ -126,7 +126,6 @@ const FilterModal = ({ filters, setFilters }) => {
       ...filters,
       separator: form.get("separator") || ",",
       remove: form.get("remove") || "",
-      minCharacters: form.get("minCharacters") || -1,
       upperCase: form.get("upperCase") || false,
       lowerCase: form.get("lowerCase") || false,
       numbers: form.get("numbers") || false,
@@ -144,7 +143,7 @@ const FilterModal = ({ filters, setFilters }) => {
   }
 
   return createPortal(
-    <Modal boxShadow="" onClose={() => setShowFilter(false)} width="100%">
+    <Modal onClose={() => setShowFilter(false)} width="100%">
       <Box
         as="form"
         sx={{
@@ -186,22 +185,6 @@ const FilterModal = ({ filters, setFilters }) => {
               name="remove"
               defaultValue={filters.remove}
               placeholder="Characters to remove"
-            />
-          </Box>
-          <Box mb={2}>
-            <Label htmlFor="minCharacters">
-              Minimum characters (Defaults to -1 [no limit])
-            </Label>
-            <Input
-              id="minCharacters"
-              type="number"
-              name="minCharacters"
-              min={-1}
-              defaultValue={filters.minCharacters}
-              placeholder="Minimum characters"
-              sx={{
-                width: "56px"
-              }}
             />
           </Box>
           <Flex
@@ -301,7 +284,6 @@ const ScramblePasswords = () => {
   const [filters, setFilters] = useState({
     separator: ",",
     remove: "",
-    minCharacters: -1,
     upperCase: false,
     lowerCase: false,
     numbers: false,
