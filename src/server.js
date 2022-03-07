@@ -11,6 +11,7 @@ import config from "./appSecrets"
 
 /**
  * The connection to the firebase server, giving APIs to access the data
+ * Impletements the Singleton pattern to ensure only one instance of the class is created
  */
 class Server {
   #app
