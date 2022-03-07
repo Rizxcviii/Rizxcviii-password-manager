@@ -8,12 +8,15 @@ import {
   Spinner
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 import { useLocation } from "react-router"
 import { joinWords, scrambleWords } from "../helpers"
 import server from "../server"
-import Notification from "./ui/Notification"
+import { Modal, Notification } from "./ui"
 
 const LIMIT = 50
+const appRoot = () =>
+  typeof document !== "undefined" && document.getElementById("root")
 
 const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
   const [showAddPassword, setShowAddPassword] = useState(false)
@@ -113,7 +116,7 @@ const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
   )
 }
 
-const Filter = ({ filters, setFilters }) => {
+const FilterModal = ({ filters, setFilters }) => {
   const [showFilter, setShowFilter] = useState(false)
 
   const handleChangeFilter = e => {
@@ -122,7 +125,12 @@ const Filter = ({ filters, setFilters }) => {
     setFilters({
       ...filters,
       separator: form.get("separator") || ",",
-      remove: form.get("remove") || ""
+      remove: form.get("remove") || "",
+      minCharacters: form.get("minCharacters") || -1,
+      upperCase: form.get("upperCase") || false,
+      lowerCase: form.get("lowerCase") || false,
+      numbers: form.get("numbers") || false,
+      symbols: form.get("symbols") || false
     })
   }
 
@@ -134,76 +142,72 @@ const Filter = ({ filters, setFilters }) => {
     )
   }
 
-  return (
-    <Box
-      as="form"
-      sx={{
-        border: "1px solid",
-        borderRadius: "5px",
-        mb: 2,
-        p: 2
-      }}
-      onSubmit={handleChangeFilter}
-    >
-      <Paragraph
+  return createPortal(
+    <Modal onClose={() => setShowFilter(false)} width="100%">
+      <Box
+        as="form"
         sx={{
-          fontSize: 4
+          bg: "white",
+          border: "1px solid",
+          borderRadius: "5px",
+          p: 2,
+          mx: 4
         }}
-        mb={1}
+        onClick={e => e.stopPropagation()}
+        onSubmit={handleChangeFilter}
       >
-        Here you can add filters, to either change the separator, or remove
-        certain characters from results!
-      </Paragraph>
-      <Flex
-        sx={{
-          width: "100%",
-          flexDirection: "column",
-          justifyContent: "space-between"
-        }}
-      >
-        <Label htmlFor="separator">Separator (Defaults to ',' [comma])</Label>
-        <Input
-          type="text"
-          defaultValue={filters.separator}
-          name="separator"
-          placeholder="Separator"
-          mb={2}
-        />
-        <Label htmlFor="remove">Remove</Label>
-        <Input
-          type="text"
-          name="remove"
-          defaultValue={filters.remove}
-          placeholder="Characters to remove"
-        />
-      </Flex>
-      <Flex
-        sx={{
-          width: "100%",
-          justifyContent: "space-between"
-        }}
-        mt={2}
-      >
-        <Button
-          type="submit"
+        <Flex
           sx={{
-            width: "150px"
+            width: "100%",
+            flexDirection: "column",
+            justifyContent: "space-between"
           }}
         >
-          Filter
-        </Button>
-        <Button
+          <Label htmlFor="separator">Separator (Defaults to ',' [comma])</Label>
+          <Input
+            type="text"
+            defaultValue={filters.separator}
+            name="separator"
+            placeholder="Separator"
+            mb={2}
+          />
+          <Label htmlFor="remove">Remove</Label>
+          <Input
+            type="text"
+            name="remove"
+            defaultValue={filters.remove}
+            placeholder="Characters to remove"
+          />
+        </Flex>
+        <Flex
           sx={{
-            width: "150px"
+            width: "100%",
+            justifyContent: "space-between"
           }}
-          variant="outline.primary"
-          onClick={() => setShowFilter(false)}
-          type="button"
+          mt={2}
         >
-          Close
-        </Button>
-      </Flex>
-    </Box>
+          <Button
+            type="submit"
+            sx={{
+              width: "150px"
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            sx={{
+              width: "150px"
+            }}
+            variant="outline.primary"
+            onClick={() => setShowFilter(false)}
+            type="button"
+          >
+            Close
+          </Button>
+        </Flex>
+      </Box>
+    </Modal>,
+    appRoot()
   )
 }
 
@@ -213,7 +217,12 @@ const ScramblePasswords = () => {
   const [errMsg, setErrMsg] = useState("")
   const [filters, setFilters] = useState({
     separator: ",",
-    remove: ""
+    remove: "",
+    minCharacters: -1,
+    upperCase: false,
+    lowerCase: false,
+    numbers: false,
+    symbols: false
   })
   const [msg, setMsg] = useState("")
 
@@ -255,7 +264,7 @@ const ScramblePasswords = () => {
         height: "470px"
       }}
     >
-      <Filter filters={filters} setFilters={setFilters} />
+      <FilterModal filters={filters} setFilters={setFilters} />
       {isLoading ? (
         <Flex
           sx={{
