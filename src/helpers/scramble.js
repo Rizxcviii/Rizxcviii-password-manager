@@ -1,3 +1,11 @@
+const checkFilters = (word, filters = {}) => {
+  if (filters.numbers && !/\d/.test(word)) return false
+  if (filters.symbols && !/[^a-zA-Z]/.test(word)) return false
+  if (filters.upperCase && !/[A-Z]/.test(word)) return false
+  if (filters.lowerCase && !/[a-z]/.test(word)) return false
+  return true
+}
+
 const scrambleWords = (words, homoglyphs, limit = 0, filters) => {
   const scrambledWords = []
   for (const word of words) {
@@ -6,26 +14,18 @@ const scrambleWords = (words, homoglyphs, limit = 0, filters) => {
       if (filters.remove.includes(letter)) continue
       newWord += letter
     }
-    let scrambledWordArr = scrambleWordRec(
-      newWord,
-      homoglyphs,
-      [],
-      limit,
-      filters
-    )
+    let scrambledWordArr = scrambleWordRec(newWord, homoglyphs, [], limit)
+    // retry if no words were found
     if (!scrambledWordArr.length) {
       const retryCount = 10
       for (let i = 0; i < retryCount; i++) {
-        scrambledWordArr = scrambleWordRec(
-          newWord,
-          homoglyphs,
-          [],
-          limit,
-          filters
-        )
+        scrambledWordArr = scrambleWordRec(newWord, homoglyphs, [], limit)
       }
     }
-    scrambledWords.push(scrambledWordArr)
+    const filteredScrambledWordArr = scrambledWordArr.filter(word =>
+      checkFilters(word, filters)
+    )
+    scrambledWords.push(filteredScrambledWordArr)
   }
   return scrambledWords
 }
@@ -34,7 +34,8 @@ const scrambleWordRec = (
   word = "",
   homoglyphs,
   generatedWords = [],
-  limit = 0
+  limit = 0,
+  filters = {}
 ) => {
   if (limit && generatedWords.length >= limit) return generatedWords
 
@@ -52,7 +53,7 @@ const scrambleWordRec = (
         const newWord = word.replace(letter, homoglyph)
         if (generatedWords.includes(newWord)) continue
         generatedWords.push(newWord)
-        scrambleWordRec(newWord, homoglyphs, generatedWords, limit)
+        scrambleWordRec(newWord, homoglyphs, generatedWords, limit, filters)
       }
     }
   }
