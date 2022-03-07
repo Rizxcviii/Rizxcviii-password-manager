@@ -307,11 +307,9 @@ const ScramblePasswords = () => {
         params.split(","),
         homoglyphs,
         LIMIT,
-        { remove: filters.remove }
+        filters
       )
-      const scrambledWords = joinWords(scrambledWordsArr, LIMIT, {
-        separator: filters.separator
-      })
+      const scrambledWords = joinWords(scrambledWordsArr, LIMIT, filters)
       setScrambledWords(scrambledWords)
       setIsLoading(false)
     }
