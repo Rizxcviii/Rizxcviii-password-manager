@@ -66,7 +66,9 @@ const Header = () => {
     <Box>
       <Flex
         sx={{
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          px: 3,
+          pt: "5px"
         }}
       >
         <Heading as="h1" sx={{ fontSize: 5 }}>
