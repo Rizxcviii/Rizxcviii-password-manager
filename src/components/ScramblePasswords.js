@@ -5,6 +5,7 @@ import {
   Input,
   Label,
   Paragraph,
+  Slider,
   Spinner
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
@@ -116,7 +117,7 @@ const ScrambledPassword = ({ password, setMsg, setErrMsg, lastEl }) => {
   )
 }
 
-const FilterModal = ({ filters, setFilters }) => {
+const FilterModal = ({ scrambledWords, filters, setFilters }) => {
   const [showFilter, setShowFilter] = useState(false)
 
   const handleChangeFilter = e => {
@@ -126,10 +127,11 @@ const FilterModal = ({ filters, setFilters }) => {
       ...filters,
       separator: form.get("separator") || ",",
       remove: form.get("remove") || "",
-      upperCase: form.get("upperCase") || false,
-      lowerCase: form.get("lowerCase") || false,
-      numbers: form.get("numbers") || false,
-      symbols: form.get("symbols") || false
+      upperCase: form.get("upperCase"),
+      lowerCase: form.get("lowerCase"),
+      numbers: form.get("numbers"),
+      symbols: form.get("symbols"),
+      charactersToScramble: parseInt(form.get("charactersToScramble"))
     })
     setShowFilter(false)
   }
@@ -185,6 +187,18 @@ const FilterModal = ({ filters, setFilters }) => {
               name="remove"
               defaultValue={filters.remove}
               placeholder="Characters to remove"
+            />
+          </Box>
+          <Box mb={2}>
+            <Label htmlFor="charactersToScramble">
+              Number of characters to scramble
+            </Label>
+            <Slider
+              id="charactersToScramble"
+              name="charactersToScramble"
+              min={0}
+              max={scrambledWords.reduce((acc, curr) => acc + curr.length, 0)}
+              defaultValue={-1}
             />
           </Box>
           <Flex
@@ -287,9 +301,12 @@ const ScramblePasswords = () => {
     upperCase: false,
     lowerCase: false,
     numbers: false,
-    symbols: false
+    symbols: false,
+    charactersToScramble: -1
   })
   const [msg, setMsg] = useState("")
+
+  console.log(filters)
 
   const { search } = useLocation()
   const params = new URLSearchParams(search).get("words")
@@ -309,8 +326,8 @@ const ScramblePasswords = () => {
         LIMIT,
         filters
       )
-      const scrambledWords = joinWords(scrambledWordsArr, LIMIT, filters)
-      setScrambledWords(scrambledWords)
+      const newScrambledWords = joinWords(scrambledWordsArr, LIMIT, filters)
+      setScrambledWords(newScrambledWords)
       setIsLoading(false)
     }
     setIsLoading(false)
@@ -327,7 +344,11 @@ const ScramblePasswords = () => {
         height: "470px"
       }}
     >
-      <FilterModal filters={filters} setFilters={setFilters} />
+      <FilterModal
+        scrambledWords={scrambledWords}
+        filters={filters}
+        setFilters={setFilters}
+      />
       {isLoading ? (
         <Flex
           sx={{
