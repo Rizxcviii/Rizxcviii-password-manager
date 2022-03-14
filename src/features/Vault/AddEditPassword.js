@@ -8,9 +8,14 @@ import {
   Spinner
 } from "@theme-ui/components"
 import { useState } from "react"
+import { createPortal } from "react-dom"
 import server from "../../server"
+import { Modal } from "../ui"
 
-const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
+const appRoot = () =>
+  typeof document !== "undefined" && document.getElementById("root")
+
+const AddEditPasswordModal = ({ setErrMsg, setMsg, onLoad }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAddPassword, setShowAddPassword] = useState(false)
 
@@ -44,75 +49,81 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
   }
 
   if (showAddPassword) {
-    return (
-      <Box
-        p={2}
-        sx={{
-          border: "1px solid black",
-          borderRadius: 6
-        }}
-        as="form"
-        onSubmit={handleAddPasswordSubmit}
-      >
-        <Paragraph
+    return createPortal(
+      <Modal onClose={() => setShowAddPassword(false)} width="100%">
+        <Box
+          backgroundColor="white"
+          p={2}
           sx={{
-            fontSize: 4
+            border: "1px solid black",
+            borderRadius: 6,
+            boxShadow:
+              "0 11px 15px -7px rgba(0,0,0,.2),0 24px 38px 3px rgba(0,0,0,.14),0 9px 46px 8px rgba(0,0,0,.12)"
           }}
+          as="form"
+          onSubmit={handleAddPasswordSubmit}
         >
-          Use the below space to add a new password. Or edit a new password by
-          using the same use case.
-        </Paragraph>
-        <Box mt={2}>
-          <Label htmlFor="useCase">Use Case</Label>
-          <Input type="text" placeholder="Use Case" name="useCase" required />
           <Paragraph
             sx={{
-              fontSize: 2
+              fontSize: 4
             }}
           >
-            *The following characters cannot be used: <br />{" "}
-            <b>{falesValues.join(` , `)}</b>
+            Use the below space to add a new password. Or edit a new password by
+            using the same use case.
           </Paragraph>
+          <Box mt={2}>
+            <Label htmlFor="useCase">Use Case</Label>
+            <Input type="text" placeholder="Use Case" name="useCase" required />
+            <Paragraph
+              sx={{
+                fontSize: 2
+              }}
+            >
+              *The following characters cannot be used: <br />{" "}
+              <b>{falesValues.join(` , `)}</b>
+            </Paragraph>
+          </Box>
+          <Box mt={2}>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="password"
+              placeholder="Password"
+              name="password"
+              mb={2}
+              required
+            />
+          </Box>
+          <Flex mt={3} width={1 / 1}>
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <>
+                <Button
+                  sx={{
+                    flexBasis: "100%"
+                  }}
+                  type="submit"
+                  mr={2}
+                >
+                  Add/Edit
+                </Button>
+                <Button
+                  variant="outline.primary"
+                  sx={{
+                    flexBasis: "100%"
+                  }}
+                  ml={2}
+                  type="button"
+                  onClick={() => setShowAddPassword(false)}
+                >
+                  Cancel
+                </Button>
+              </>
+            )}
+          </Flex>
         </Box>
-        <Box mt={2}>
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            placeholder="Password"
-            name="password"
-            mb={2}
-            required
-          />
-        </Box>
-        <Flex mt={3} width={1 / 1}>
-          {isLoading ? (
-            <Spinner />
-          ) : (
-            <>
-              <Button
-                sx={{
-                  flexBasis: "100%"
-                }}
-                type="submit"
-                mr={2}
-              >
-                Add/Edit
-              </Button>
-              <Button
-                variant="outline.primary"
-                sx={{
-                  flexBasis: "100%"
-                }}
-                ml={2}
-                type="button"
-                onClick={() => setShowAddPassword(false)}
-              >
-                Cancel
-              </Button>
-            </>
-          )}
-        </Flex>
-      </Box>
+      </Modal>,
+      appRoot()
     )
   }
   return (
@@ -120,4 +131,4 @@ const AddEditPassword = ({ setErrMsg, setMsg, onLoad }) => {
   )
 }
 
-export default AddEditPassword
+export default AddEditPasswordModal
