@@ -1,14 +1,14 @@
 import React from "react"
 import { MemoryRouter as Router, Route, Switch } from "react-router-dom"
-import AnswerQuestions from "./components/AnswerQuestions"
-import GeneratePasswords from "./components/GeneratePasswords"
-import Keycode from "./components/Keycode"
-import Passwords from "./components/Passwords"
-import ScramblePasswords from "./components/ScramblePasswords"
-import Settings from "./components/Settings"
-import SignIn from "./components/SignIn"
-import SignUp from "./components/SignUp"
 import { useAuth } from "./contexts/AuthContext"
+import AnswerQuestions from "./features/AnswerQuestions"
+import GeneratePasswords from "./features/GeneratePasswords"
+import KeyCode from "./features/KeyCode"
+import ScramblePasswords from "./features/ScramblePasswords"
+import Settings from "./features/Settings"
+import SignIn from "./features/SignIn"
+import SignUp from "./features/SignUp"
+import Vault from "./features/Vault"
 import BaseLayout from "./layouts/BaseLayout"
 import LoginLayout from "./layouts/LoginLayout"
 import SignedInLayout from "./layouts/SignedInLayout"
@@ -21,7 +21,7 @@ const SignedOutRoutes = () => {
       <Route exact path="/">
         {getCurrentUser() ? (
           <BaseLayout>
-            <Keycode />
+            <KeyCode />
           </BaseLayout>
         ) : (
           <LoginLayout>
@@ -31,13 +31,13 @@ const SignedOutRoutes = () => {
       </Route>
       <Route path="/key-code">
         <BaseLayout>
-          <Keycode />
+          <KeyCode />
         </BaseLayout>
       </Route>
       <Route path="/register">
         {getCurrentUser() ? (
           <BaseLayout>
-            <Keycode />
+            <KeyCode />
           </BaseLayout>
         ) : (
           <LoginLayout>
@@ -54,7 +54,7 @@ const SignedInRoutes = () => {
     <>
       <Route exact path={["/passwords", "/"]}>
         <SignedInLayout>
-          <Passwords />
+          <Vault />
         </SignedInLayout>
       </Route>
       <Route path="/questions">
