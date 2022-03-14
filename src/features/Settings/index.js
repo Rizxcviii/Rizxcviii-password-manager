@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Button, Flex, Heading } from "theme-ui"
-import { useAuth } from "../contexts/AuthContext"
-import Notification from "./ui/Notification"
+import { useAuth } from "../../contexts/AuthContext"
+import Notification from "../ui/Notification"
 
 const Settings = () => {
   const [errMsg, setErrMsg] = useState("")

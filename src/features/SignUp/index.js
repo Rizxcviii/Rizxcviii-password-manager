@@ -1,9 +1,8 @@
 import { Button, Flex, Input, Paragraph, Text } from "@theme-ui/components"
 import React, { useState } from "react"
-import { useAuth } from "../contexts/AuthContext"
-import server from "../server"
-import Loader from "./ui/Loader"
-import Notification from "./ui/Notification"
+import { useAuth } from "../../contexts/AuthContext"
+import server from "../../server"
+import { Loader, Notification } from "../ui"
 
 const SignUp = () => {
   const [errorMsg, setErrorMsg] = useState("")

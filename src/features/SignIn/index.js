@@ -1,8 +1,7 @@
 import { Button, Flex, Input, Paragraph } from "@theme-ui/components"
 import React, { useState } from "react"
-import { useAuth } from "../contexts/AuthContext"
-import Loader from "./ui/Loader"
-import Notification from "./ui/Notification"
+import { useAuth } from "../../contexts/AuthContext"
+import { Loader, Notification } from "../ui"
 
 const SignIn = () => {
   const { signIn, getIsLoading } = useAuth()

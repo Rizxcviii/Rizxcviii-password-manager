@@ -3,33 +3,13 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
   Paragraph,
   Text
 } from "@theme-ui/components"
 import React, { useEffect, useState } from "react"
-import server from "../server"
-import Loader from "./ui/Loader"
-import Notification from "./ui/Notification"
-
-const Question = ({ question, answer, onChange, ...props }) => {
-  return (
-    <Flex
-      p={2}
-      sx={{
-        flexDirection: "column",
-        border: "1px solid black",
-        borderRadius: 6
-      }}
-      {...props}
-    >
-      <Text sx={{ fontSize: 4, fontWeight: "bold" }}>Question:</Text>
-      <Text mb={2}>{question}</Text>
-      <Text sx={{ fontSize: 4, fontWeight: "bold" }}>Your response:</Text>
-      <Input onChange={e => onChange(e.target.value)} value={answer} mt={1} />
-    </Flex>
-  )
-}
+import server from "../../server"
+import { Loader, Notification } from "../ui"
+import Question from "./Question"
 
 const AnswerQuestions = () => {
   const [questionAnswerSet, setQuestionAnswerSet] = useState([])
