@@ -16,7 +16,8 @@ const Modal = ({ children, onClose, ...props }) => {
         background: "#7f7f7f94",
         overflow: "auto",
         height: "100%",
-        width: "100%"
+        width: "100%",
+        ...props
       }}
     >
       {children}

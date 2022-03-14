@@ -68,7 +68,7 @@ const Footer = () => {
       >
         <abbr
           style={{ width: "100%", height: "auto" }}
-          title="Generate Password"
+          title="Generate Passwords"
         >
           <img
             alt="Generate Passwords"
