@@ -1,6 +1,6 @@
 import React from "react"
 import { useHistory } from "react-router"
-import { Box, Button, Divider, Flex, Heading, IconButton } from "theme-ui"
+import { Box, Divider, Flex, Heading, IconButton } from "theme-ui"
 import BaseLayout from "./BaseLayout"
 
 const Footer = () => {
@@ -16,46 +16,67 @@ const Footer = () => {
         flexBasis: 1 / 3
       }}
     >
-      <Button
+      <IconButton
         variant="nav"
         sx={{
           flexBasis: "100%",
-          width: "auto",
+          height: "auto",
           borderRadius: 0,
           border: "1px solid black",
-          borderRight: 0,
-          fontSize: 5
+          borderRight: 0
         }}
         onClick={() => history.push("/passwords")}
       >
-        Your Vault
-      </Button>
-      <Button
+        <abbr style={{ width: "100%" }} title="Vault">
+          <img
+            alt="Vault"
+            src={`${process.env.PUBLIC_URL}/img/vault.svg`}
+            width="40"
+          />
+        </abbr>
+      </IconButton>
+      <IconButton
         variant="nav"
         sx={{
           flexBasis: "100%",
           borderRadius: 0,
+          height: "auto",
           border: "1px solid black",
-          borderRight: 0,
-          fontSize: 5
+          borderRight: 0
         }}
         onClick={() => history.push("/questions")}
       >
-        Answer Questions
-      </Button>
-      <Button
+        <abbr style={{ width: "100%" }} title="Answer Questions">
+          <img
+            alt="Answer Questions"
+            src={`${process.env.PUBLIC_URL}/img/answer_questions.svg`}
+            width="45px"
+          />
+        </abbr>
+      </IconButton>
+      <IconButton
         variant="nav"
         sx={{
           flexBasis: "100%",
           borderRadius: 0,
+          height: "auto",
           border: "1px solid black",
           borderRight: 0,
-          fontSize: 5
+          padding: 0
         }}
         onClick={() => history.push("/generate")}
       >
-        Generate Passwords
-      </Button>
+        <abbr
+          style={{ width: "100%", height: "auto" }}
+          title="Generate Password"
+        >
+          <img
+            alt="Generate Passwords"
+            src={`${process.env.PUBLIC_URL}/img/generate_passwords.svg`}
+            width="45px"
+          />
+        </abbr>
+      </IconButton>
     </Flex>
   )
 }
