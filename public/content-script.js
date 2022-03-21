@@ -20,7 +20,8 @@ const createHTMLNotification = ({ useCase, password }) =>
         <input type="password" value="${password}" placeholder="Password" style="margin-bottom: 4px;width: 100%;">
         <div style="display: flex; justify-content: space-between;">
           <input type="submit" value="Add Password" style="width: 130px; padding: 8px 0; background-color: #3AAFA9;border: none;color: white;font-size: 16px;border-radius: 4px;font-weight: 600;">
-          <input type="button" value="Cancel" style="width: 130px; padding: 8px 0; background-color: #3AAFA9;border: none;color: white;font-size: 16px;border-radius: 4px;font-weight: 600;" onclick="${() => document.getElementById('add-password-rizxcviii').remove()}">
+          <input type="button" value="Cancel" style="width: 130px; padding: 8px 0; background-color: #3AAFA9;border: none;color: white;font-size: 16px;border-radius: 4px;font-weight: 600;" onclick="${() =>
+            document.getElementById("add-password-rizxcviii").remove()}">
         </div>
       </form>
     </div>

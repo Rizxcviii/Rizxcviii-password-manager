@@ -7,7 +7,7 @@ import {
   signOut
 } from "firebase/auth"
 import { child, get, getDatabase, ref, set, update } from "firebase/database"
-import config from "./appSecrets"
+import config from "./keys"
 
 /**
  * The connection to the firebase server, giving APIs to access the data
