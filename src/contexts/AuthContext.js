@@ -69,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     signIn,
     getIsLoading,
     getKeyCode,
+    setKeyCode,
     getIsConfirmed,
     setIsConfirmed
   }

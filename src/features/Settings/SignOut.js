@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom"
 import { Button } from "theme-ui"
 import { useAuth } from "../../contexts/AuthContext"
 
-const SingOut = ({ setErrMsg }) => {
+const SingOut = ({ handleError }) => {
   const { signOut } = useAuth()
   const history = useHistory()
 
@@ -12,7 +12,7 @@ const SingOut = ({ setErrMsg }) => {
     if (!res) {
       history.push("/")
     } else {
-      setErrMsg("There has been an error signing out, error: " + res.err)
+      handleError("There has been an error signing out, error: " + res.err)
     }
   }
   return (
