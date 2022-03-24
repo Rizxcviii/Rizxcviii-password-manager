@@ -6,9 +6,7 @@ const config = {
   projectId: "password-manager-ac618",
   storageBucket: "password-manager-ac618.appspot.com",
   messagingSenderId: "471912869160",
-  appId: "1:471912869160:web:edcd4456a959e9e117741d",
-  databaseURL:
-    "https://password-manager-ac618-default-rtdb.europe-west1.firebasedatabase.app/"
+  appId: "1:471912869160:web:edcd4456a959e9e117741d"
 }
 
 export default config
